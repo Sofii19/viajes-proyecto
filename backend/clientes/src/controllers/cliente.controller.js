@@ -2,6 +2,7 @@ const ClienteService = require('../services/cliente.service');
 
 const crearCliente = async (req, res) => {
   try {
+    console.log("Llegué a controller")
     const nuevoCliente = await ClienteService.crearCliente(req.body);
     res.status(201).json(nuevoCliente);
   } catch (error) {
