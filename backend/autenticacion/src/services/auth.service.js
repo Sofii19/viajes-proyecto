@@ -100,6 +100,24 @@ const generarJWTGoogle = async (usuario) => {
   );
 };
 
+const actualizar2FA = async ({ userId, habilitar }) => {
+  const usuario = await UsuariosRepository.buscarPorId(userId);
+  if (!usuario) throw new Error("Usuario no encontrado.");
+
+  if (habilitar) {
+    // Activar: genera y guarda el secreto
+    const secret = speakeasy.generateSecret({ length: 20 });
+    await UsuariosRepository.guardar2FASecret(userId, secret.base32);
+    usuario.twofa_secret = secret.base32;
+    return { ...usuario, otpauthUrl: secret.otpauth_url };
+  } else {
+    // Desactivar: elimina el secreto
+    await UsuariosRepository.guardar2FASecret(userId, null);
+    usuario.twofa_secret = null;
+    return usuario;
+  }
+};
+
 const activar2FA = async (userId) => {
   const secret = speakeasy.generateSecret({ length: 20 });
   await UsuariosRepository.guardar2FASecret(userId, secret.base32);
@@ -127,4 +145,5 @@ module.exports = {
   generarJWTGoogle,
   activar2FA,
   verificar2FA,
+  actualizar2FA
 };

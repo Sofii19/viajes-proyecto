@@ -14,6 +14,24 @@ const registro = async (req, res) => {
   }
 };
 
+const actualizar2FA = async (req, res) => {
+  try {
+    // Si usas JWT, puedes obtener el id del usuario autenticado
+    const userId = req.user ? req.user.id : req.body.userId;
+    const { habilitar } = req.body; // habilitar: true para activar, false para desactivar
+
+    const usuario = await AuthService.actualizar2FA({ userId, habilitar });
+    res.status(200).json({
+      mensaje: habilitar
+        ? "Verificación en dos pasos activada correctamente."
+        : "Verificación en dos pasos desactivada correctamente.",
+      usuario,
+    });
+  } catch (error) {
+    res.status(400).json({ mensaje: error.message });
+  }
+};
+
 const activarCuenta = async (req, res) => {
   try {
     await AuthService.activarCuenta(req.body.token);
@@ -85,4 +103,5 @@ module.exports = {
   loginGoogleCallback,
   activar2FA,
   verificar2FA,
+  actualizar2FA
 };

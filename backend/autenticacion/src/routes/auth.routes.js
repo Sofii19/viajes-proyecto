@@ -12,6 +12,8 @@ router.post("/activar", AuthController.activarCuenta);
 
 router.post("/login", AuthController.login);
 
+router.patch("/actualizar2FA", AuthController.actualizar2FA);
+
 router.get(
   "/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
