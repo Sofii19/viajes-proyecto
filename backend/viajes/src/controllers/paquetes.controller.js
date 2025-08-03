@@ -1,7 +1,22 @@
 const PaquetesService = require('../services/paquetes.service');
+const VehiculosService = require('../services/vehiculos.service');
+const HotelesService = require('../services/hoteles.service');
+const RutasService = require('../services/rutas.service');
+const PromocionesService = require('../services/promociones.service');
 
 const crearPaquete = async (req, res) => {
   try {
+    const { vehiculo_id, hotel_id, ruta_id, promocion_id } = req.body;
+
+    const vehiculo = await VehiculosService.obtenerVehiculoPorId(vehiculo_id);
+    const hotel = await HotelesService.obtenerHotelPorId(hotel_id);
+    const ruta = await RutasService.obtenerRutaPorId(ruta_id);
+    const promocion = await PromocionesService.obtenerPromocionPorId(promocion_id);
+
+    if (!vehiculo || !hotel || !ruta || !promocion) {
+      return res.status(400).json({ mensaje: 'Uno o más IDs relacionados no existen' });
+    }
+
     const nuevoPaquete = await PaquetesService.crearPaquete(req.body);
     res.status(201).json(nuevoPaquete);
   } catch (error) {
@@ -30,6 +45,17 @@ const obtenerPaquetePorId = async (req, res) => {
 
 const actualizarPaquete = async (req, res) => {
   try {
+    const { vehiculo_id, hotel_id, ruta_id, promocion_id } = req.body;
+
+    const vehiculo = await VehiculosService.obtenerVehiculoPorId(vehiculo_id);
+    const hotel = await HotelesService.obtenerHotelPorId(hotel_id);
+    const ruta = await RutasService.obtenerRutaPorId(ruta_id);
+    const promocion = await PromocionesService.obtenerPromocionPorId(promocion_id);
+
+    if (!vehiculo || !hotel || !ruta || !promocion) {
+      return res.status(400).json({ mensaje: 'Uno o más IDs relacionados no existen' });
+    }
+
     const paqueteActualizado = await PaquetesService.actualizarPaquete(req.params.id, req.body);
     res.json(paqueteActualizado);
   } catch (error) {

@@ -23,6 +23,11 @@
               "src/assets"
             ],
             "styles": [
+              "src/assets/css/nucleo-icons.css",
+              "src/assets/css/nucleo-svg.css",
+              "src/assets/css/perfect-scrollbar.css",
+              "src/assets/css/soft-ui-dashboard-tailwind.css",
+              "src/assets/css/tooltips.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -97,5 +102,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

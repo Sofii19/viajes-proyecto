@@ -1,0 +1,401 @@
+<div>
+  <!-- table 1 -->
+
+  <div class="flex flex-wrap -mx-3">
+    <div class="flex-none w-full max-w-full px-3">
+      <div
+        class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border"
+      >
+        <div
+          class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent"
+        >
+          <h6>Paquetes</h6>
+        </div>
+        <div class="flex-auto px-0 pt-0 pb-2">
+          <div class="p-0 overflow-x-auto">
+            <table
+              class="items-center w-full mb-0 align-top border-gray-200 text-slate-500"
+            >
+              <thead class="align-bottom">
+                <tr>
+                  <th
+                    class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
+                  >
+                    Nombre
+                  </th>
+                  <th
+                    class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
+                  >
+                    Descripción
+                  </th>
+                  <th
+                    class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
+                  >
+                    Precio
+                  </th>
+                  <th
+                    class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
+                  >
+                    Promocion
+                  </th>
+                  <th
+                    class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
+                  >
+                    Ruta
+                  </th>
+                  <th
+                    class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
+                  >
+                    Hotel
+                  </th>
+                  <th
+                    class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
+                  >
+                    Vehiculo
+                  </th>
+                  <th>
+                    <button
+                      (click)="abrirModalCrear()"
+                      class="flex items-center justify-center w-7 h-7 bg-purple-500 text-white rounded-md hover:bg-purple-600 transition-colors"
+                      title="Crear"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 4v16m8-8H4"
+                        />
+                      </svg>
+                    </button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let Paquete of paquetes">
+                  <td
+                    class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent"
+                  >
+                    <div class="flex px-2 py-1">
+                      <div class="flex flex-col justify-center">
+                        <h6 class="mb-0 text-sm leading-normal">
+                          {{ Paquete.nombre }}
+                        </h6>
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    class="p-2 align-middle bg-transparent border-b whitespace-nowrap text-center"
+                  >
+                    <span
+                      [innerHTML]="
+                        Paquete.descripcion | descripcionLinebreak : 4
+                      "
+                    ></span>
+                  </td>
+                  <td
+                    class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent"
+                  >
+                    <span
+                      class="bg-gradient-to-tl from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white"
+                    >
+                      {{ Paquete.precio_total }}
+                    </span>
+                  </td>
+                  <td
+                    class="p-2 align-middle bg-transparent border-b whitespace-nowrap text-center"
+                  >
+                    {{ getPromocionNombre(Paquete.promocion_id) }}
+                  </td>
+                  <td
+                    class="p-2 align-middle bg-transparent border-b whitespace-nowrap text-center"
+                  >
+                    {{ getRutaNombre(Paquete.ruta_id) }}
+                  </td>
+                  <td
+                    class="p-2 align-middle bg-transparent border-b whitespace-nowrap text-center"
+                  >
+                    {{ getHotelNombre(Paquete.hotel_id) }}
+                  </td>
+                  <td
+                    class="p-2 align-middle bg-transparent border-b whitespace-nowrap text-center"
+                  >
+                    {{ getVehiculoNombre(Paquete.vehiculo_id) }}
+                  </td>
+
+                  <td
+                    class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent"
+                  >
+                    <div class="flex flex-col items-center gap-1">
+                      <!-- Botón editar -->
+                      <button
+                        (click)="abrirModalEditar(Paquete.id)"
+                        class="flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+                        title="Actualizar"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M15.232 5.232l3.536 3.536M9 13l6.293-6.293a1 1 0 011.414 0l1.586 1.586a1 1 0 010 1.414L11 15H9v-2z"
+                          />
+                        </svg>
+                      </button>
+
+                      <!-- Botón eliminar -->
+                      <button
+                        (click)="eliminarPaquete(Paquete.id)"
+                        class="flex items-center justify-center w-7 h-7 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
+                        title="Eliminar"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- Modal Crear Paquete -->
+            <div
+              *ngIf="mostrarModalCrear"
+              class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40"
+            >
+              <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
+                <h2 class="text-lg font-bold mb-4">Crear Paquete</h2>
+                <form (ngSubmit)="crearPaquete()">
+                  <input
+                    class="mb-2 w-full p-2 border rounded"
+                    placeholder="Nombre"
+                    [(ngModel)]="nuevoPaquete.nombre"
+                    name="nombre"
+                    required
+                  />
+                  <textarea
+                    class="mb-2 w-full p-2 border rounded"
+                    placeholder="Descripción"
+                    [(ngModel)]="nuevoPaquete.descripcion"
+                    name="descripcion"
+                    required
+                  ></textarea>
+                  <input
+                    class="mb-2 w-full p-2 border rounded"
+                    type="number"
+                    placeholder="Precio Total"
+                    [(ngModel)]="nuevoPaquete.precio_total"
+                    name="precio_total"
+                    required
+                    min="0"
+                  />
+
+                  <!-- Select Vehículo -->
+                  <select
+                    class="mb-2 w-full p-2 border rounded"
+                    [(ngModel)]="nuevoPaquete.vehiculo_id"
+                    name="vehiculo_id"
+                    required
+                  >
+                    <option value="" disabled selected>
+                      Selecciona un vehículo
+                    </option>
+                    <option *ngFor="let v of vehiculos" [value]="v.id">
+                      {{ v.marca }} {{ v.modelo }} ({{ v.placa }})
+                    </option>
+                  </select>
+
+                  <!-- Select Hotel -->
+                  <select
+                    class="mb-2 w-full p-2 border rounded"
+                    [(ngModel)]="nuevoPaquete.hotel_id"
+                    name="hotel_id"
+                    required
+                  >
+                    <option value="" disabled selected>
+                      Selecciona un hotel
+                    </option>
+                    <option *ngFor="let h of hoteles" [value]="h.id">
+                      {{ h.nombre }} ({{ h.ciudad }})
+                    </option>
+                  </select>
+
+                  <!-- Select Ruta -->
+                  <select
+                    class="mb-2 w-full p-2 border rounded"
+                    [(ngModel)]="nuevoPaquete.ruta_id"
+                    name="ruta_id"
+                    required
+                  >
+                    <option value="" disabled selected>
+                      Selecciona una ruta
+                    </option>
+                    <option *ngFor="let r of rutas" [value]="r.id">
+                      {{ r.nombre_ruta }}
+                    </option>
+                  </select>
+
+                  <!-- Select Promoción -->
+                  <select
+                    class="mb-2 w-full p-2 border rounded"
+                    [(ngModel)]="nuevoPaquete.promocion_id"
+                    name="promocion_id"
+                    required
+                  >
+                    <option value="" disabled selected>
+                      Selecciona una promoción
+                    </option>
+                    <option *ngFor="let p of promociones" [value]="p.id">
+                      {{ p.nombre }}
+                    </option>
+                  </select>
+
+                  <div class="flex justify-end gap-2 mt-4">
+                    <button
+                      type="button"
+                      (click)="cerrarModalCrear()"
+                      class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      type="submit"
+                      class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+                    >
+                      Crear
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- Modal Editar Paquete -->
+            <div
+              *ngIf="mostrarModalEditar"
+              class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40"
+            >
+              <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
+                <h2 class="text-lg font-bold mb-4">Actualizar Paquete</h2>
+                <form (ngSubmit)="actualizarPaquete()">
+                  <input
+                    class="mb-2 w-full p-2 border rounded"
+                    placeholder="Nombre"
+                    [(ngModel)]="paqueteEditar.nombre"
+                    name="nombreEditar"
+                    required
+                  />
+                  <textarea
+                    class="mb-2 w-full p-2 border rounded"
+                    placeholder="Descripción"
+                    [(ngModel)]="paqueteEditar.descripcion"
+                    name="descripcionEditar"
+                    required
+                  ></textarea>
+                  <input
+                    class="mb-2 w-full p-2 border rounded"
+                    type="number"
+                    placeholder="Precio Total"
+                    [(ngModel)]="paqueteEditar.precio_total"
+                    name="precioTotalEditar"
+                    required
+                    min="0"
+                  />
+
+                  <!-- Select Vehículo -->
+                  <select
+                    class="mb-2 w-full p-2 border rounded"
+                    [(ngModel)]="paqueteEditar.vehiculo_id"
+                    name="vehiculoIdEditar"
+                    required
+                  >
+                    <option value="" disabled>Selecciona un vehículo</option>
+                    <option *ngFor="let v of vehiculos" [value]="v.id">
+                      {{ v.marca }} {{ v.modelo }} ({{ v.placa }})
+                    </option>
+                  </select>
+
+                  <!-- Select Hotel -->
+                  <select
+                    class="mb-2 w-full p-2 border rounded"
+                    [(ngModel)]="paqueteEditar.hotel_id"
+                    name="hotelIdEditar"
+                    required
+                  >
+                    <option value="" disabled>Selecciona un hotel</option>
+                    <option *ngFor="let h of hoteles" [value]="h.id">
+                      {{ h.nombre }} ({{ h.ciudad }})
+                    </option>
+                  </select>
+
+                  <!-- Select Ruta -->
+                  <select
+                    class="mb-2 w-full p-2 border rounded"
+                    [(ngModel)]="paqueteEditar.ruta_id"
+                    name="rutaIdEditar"
+                    required
+                  >
+                    <option value="" disabled>Selecciona una ruta</option>
+                    <option *ngFor="let r of rutas" [value]="r.id">
+                      {{ r.nombre_ruta }}
+                    </option>
+                  </select>
+
+                  <!-- Select Promoción -->
+                  <select
+                    class="mb-2 w-full p-2 border rounded"
+                    [(ngModel)]="paqueteEditar.promocion_id"
+                    name="promocionIdEditar"
+                    required
+                  >
+                    <option value="" disabled>Selecciona una promoción</option>
+                    <option *ngFor="let p of promociones" [value]="p.id">
+                      {{ p.nombre }}
+                    </option>
+                  </select>
+
+                  <div class="flex justify-end gap-2 mt-4">
+                    <button
+                      type="button"
+                      (click)="cerrarModalEditar()"
+                      class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      type="submit"
+                      class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                    >
+                      Actualizar
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

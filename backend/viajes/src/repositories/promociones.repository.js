@@ -36,3 +36,11 @@ const actualizar = async (id, { nombre, descripcion, descuento_porcentaje, fecha
 const eliminar = async (id) => {
   await pool.query('DELETE FROM promociones WHERE id = $1;', [id]);
 };
+
+module.exports = {
+  crear,
+  obtenerTodas,
+  obtenerPorId,
+  actualizar,
+  eliminar
+};
