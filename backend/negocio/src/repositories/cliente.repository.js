@@ -2,13 +2,13 @@
 
 const pool = require('../config/db'); // Asegúrate de tener este archivo para la conexión
 
-const crear = async ({ nombre, correo, telefono }) => {
+const crear = async ({ nombre, apellido, cedula, correo, telefono, usuario_id }) => {
   const query = `
-    INSERT INTO clientes (nombre, correo, telefono)
-    VALUES ($1, $2, $3)
+    INSERT INTO clientes (nombre, apellido, cedula, correo, telefono, usuario_id)
+    VALUES ($1, $2, $3, $4, $5, $6)
     RETURNING *;
   `;
-  const values = [nombre, correo, telefono];
+  const values = [nombre, apellido, cedula, correo, telefono, usuario_id];
   const result = await pool.query(query, values);
   return result.rows[0];
 };
