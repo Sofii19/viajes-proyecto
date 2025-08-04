@@ -1,4 +1,4 @@
-const PagoRepository = require('../repositories/pago.repository');
+const PagoRepository = require("../repositories/pago.repository");
 
 class PagoService {
   async crearPago(pagoData) {
@@ -6,7 +6,7 @@ class PagoService {
       const nuevoPago = await PagoRepository.crearPago(pagoData);
       return nuevoPago;
     } catch (error) {
-      throw new Error('Error al crear el pago: ' + error.message);
+      throw new Error("Error al crear el pago: " + error.message);
     }
   }
 
@@ -14,7 +14,7 @@ class PagoService {
     try {
       return await PagoRepository.obtenerPagos();
     } catch (error) {
-      throw new Error('Error al obtener los pagos: ' + error.message);
+      throw new Error("Error al obtener los pagos: " + error.message);
     }
   }
 
@@ -22,11 +22,11 @@ class PagoService {
     try {
       const pago = await PagoRepository.obtenerPagoPorId(id);
       if (!pago) {
-        throw new Error('Pago no encontrado');
+        throw new Error("Pago no encontrado");
       }
       return pago;
     } catch (error) {
-      throw new Error('Error al obtener el pago: ' + error.message);
+      throw new Error("Error al obtener el pago: " + error.message);
     }
   }
 
@@ -34,11 +34,11 @@ class PagoService {
     try {
       const pagoActualizado = await PagoRepository.actualizarPago(id, datos);
       if (!pagoActualizado) {
-        throw new Error('Pago no encontrado para actualizar');
+        throw new Error("Pago no encontrado para actualizar");
       }
       return pagoActualizado;
     } catch (error) {
-      throw new Error('Error al actualizar el pago: ' + error.message);
+      throw new Error("Error al actualizar el pago: " + error.message);
     }
   }
 
@@ -46,11 +46,19 @@ class PagoService {
     try {
       const pagoEliminado = await PagoRepository.eliminarPago(id);
       if (!pagoEliminado) {
-        throw new Error('Pago no encontrado para eliminar');
+        throw new Error("Pago no encontrado para eliminar");
       }
       return pagoEliminado;
     } catch (error) {
-      throw new Error('Error al eliminar el pago: ' + error.message);
+      throw new Error("Error al eliminar el pago: " + error.message);
+    }
+  }
+
+  async reportePagosPorFechas(fechaInicio, fechaFin) {
+    try {
+      return await PagoRepository.reportePagosPorFechas(fechaInicio, fechaFin);
+    } catch (error) {
+      throw new Error("Error al obtener el reporte de pagos: " + error.message);
     }
   }
 }
