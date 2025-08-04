@@ -1,35 +1,34 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { cuid } from '@adonisjs/core/helpers'
 import hash from '@adonisjs/core/services/hash'
+import { DateTime } from 'luxon'
+import jwt from 'jsonwebtoken'
+
 import Usuario from '#models/usuario'
 import Activacion from '#models/activacion'
 import Rol from '#models/rol'
+
 import { registroUsuarioValidator } from '#validators/registrar_usuario'
-import { enviarCorreoActivacion } from '../utils/email.js'
 import { loginUsuarioValidator } from '#validators/login_usuario'
-import jwt from 'jsonwebtoken'
+import { codigo2faValidator } from '#validators/codigo_2_fa'
+
+import { enviarCorreoActivacion, enviarCodigo2FA } from '../utils/email.js'
+import { generarCodigo2FA } from '../utils/codigo2fa.js'
 
 export default class AuthController {
-public async register({ request, response }: HttpContext) {
+  public async register({ request, response }: HttpContext) {
     const datos = await request.validateUsing(registroUsuarioValidator)
 
-    // Verificar si el correo ya está registrado
     const existe = await Usuario.findBy('email', datos.email)
     if (existe) {
-      return response.status(400).json({
-        mensaje: 'El correo electrónico ya está registrado',
-      })
+      return response.status(400).json({ mensaje: 'El correo electrónico ya está registrado' })
     }
 
-    // Asignar el rol 'cliente' por defecto
     const rol = await Rol.findBy('nombre', 'cliente')
     if (!rol) {
-      return response.status(400).json({
-        mensaje: 'El rol especificado no es válido',
-      })
+      return response.status(400).json({ mensaje: 'El rol especificado no es válido' })
     }
 
-    // Crear el usuario con los campos seguros (sin permitir rol ni activo desde el request)
     const usuario = await Usuario.create({
       primerNombre: datos.primerNombre,
       segundoNombre: datos.segundoNombre || undefined,
@@ -41,7 +40,6 @@ public async register({ request, response }: HttpContext) {
       rolId: rol.id,
     })
 
-    // Generar y guardar token de activación si no está activo
     const token = cuid()
     await Activacion.create({
       usuario_id: usuario.id,
@@ -50,7 +48,6 @@ public async register({ request, response }: HttpContext) {
       fecha_creacion: new Date(),
     })
 
-    // Enviar correo de activación
     try {
       await enviarCorreoActivacion(usuario.email, token)
     } catch (error) {
@@ -71,7 +68,6 @@ public async register({ request, response }: HttpContext) {
     })
   }
 
-  // ✅ Activar cuenta
   public async activarCuenta({ params, response }: HttpContext) {
     const { token } = params
 
@@ -94,17 +90,16 @@ public async register({ request, response }: HttpContext) {
     await activacion.save()
 
     return response.send(`
-    <html>
+      <html>
         <head><title>Cuenta activada</title></head>
         <body style="font-family: Arial; text-align: center; margin-top: 50px;">
         <h2 style="color: green;">¡Tu cuenta ha sido activada correctamente!</h2>
         <p>Ya puedes iniciar sesión en la plataforma.</p>
         </body>
-    </html>
+      </html>
     `)
   }
 
-  // ✅ Inicio de sesión
   public async login({ request, response }: HttpContext) {
     const datos = await request.validateUsing(loginUsuarioValidator)
 
@@ -114,7 +109,7 @@ public async register({ request, response }: HttpContext) {
       .first()
 
     if (!usuario) {
-      return response.status(401).json({ mensaje: 'Credenciales incorrectas' })
+      return response.status(401).json({ mensaje: 'Usuario no existe' })
     }
 
     const contrasenaValida = await hash.verify(usuario.password, datos.password)
@@ -126,6 +121,69 @@ public async register({ request, response }: HttpContext) {
       return response.status(403).json({ mensaje: 'La cuenta no ha sido activada' })
     }
 
+    if (!usuario.twofaActivo) {
+      const payload = {
+        sub: usuario.id,
+        email: usuario.email,
+        rol: usuario.rol.nombre,
+      }
+
+      const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' })
+
+      return response.ok({
+        mensaje: 'Inicio de sesión exitoso',
+        token,
+        usuario: {
+          id: usuario.id,
+          email: usuario.email,
+          rol: usuario.rol.nombre,
+        },
+      })
+    }
+
+    // Si el usuario tiene 2FA activado
+    const codigo = generarCodigo2FA()
+    const expiracion = DateTime.now().plus({ minutes: 5 })
+
+    usuario.codigo2fa = codigo
+    usuario.expiracionCodigo2fa = expiracion
+    await usuario.save()
+
+    try {
+      await enviarCodigo2FA(usuario.email, codigo)
+    } catch (error) {
+      console.error('Error enviando correo 2FA:', error)
+      return response.status(500).json({ mensaje: 'Error enviando código de verificación 2FA' })
+    }
+
+    return response.status(202).json({
+      mensaje: 'Código de verificación enviado. Verifica tu correo para completar el inicio de sesión.',
+      requiere2fa: true,
+      usuario_id: usuario.id,
+    })
+  }
+
+  public async verificarCodigo2fa({ request, response }: HttpContext) {
+    const datos = await request.validateUsing(codigo2faValidator)
+
+    const usuario = await Usuario.query()
+      .where('id', datos.usuario_id)
+      .preload('rol')
+      .first()
+
+    if (!usuario || !usuario.codigo2fa || !usuario.expiracionCodigo2fa) {
+      return response.status(400).json({ mensaje: 'Código inválido o expirado' })
+    }
+
+    if (usuario.codigo2fa !== datos.codigo) {
+      return response.status(401).json({ mensaje: 'Código de verificación incorrecto' })
+    }
+
+    if (usuario.expiracionCodigo2fa < DateTime.now()) {
+      return response.status(401).json({ mensaje: 'El código ha expirado' })
+    }
+
+    // Código correcto, generamos JWT
     const payload = {
       sub: usuario.id,
       email: usuario.email,
@@ -134,9 +192,13 @@ public async register({ request, response }: HttpContext) {
 
     const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' })
 
+    // Limpiamos el código de 2FA
+    usuario.codigo2fa = undefined
+    usuario.expiracionCodigo2fa = undefined
+    await usuario.save()
 
     return response.ok({
-      mensaje: 'Inicio de sesión exitoso',
+      mensaje: 'Autenticación completada exitosamente.',
       token,
       usuario: {
         id: usuario.id,

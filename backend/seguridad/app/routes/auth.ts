@@ -6,4 +6,6 @@ router.group(() => {
   router.post('/register', [AuthController, 'register'])
   router.get('/activar/:token', [AuthController, 'activarCuenta'])
   router.post('/login', [AuthController, 'login'])
+  router.post('/verificar-2fa', [AuthController, 'verificarCodigo2fa'])
+
 }).prefix('/auth')
