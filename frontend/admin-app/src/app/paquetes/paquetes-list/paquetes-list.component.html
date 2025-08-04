@@ -218,12 +218,9 @@
                     class="mb-2 w-full p-2 border rounded"
                     [(ngModel)]="nuevoPaquete.vehiculo_id"
                     name="vehiculo_id"
-                    required
                   >
-                    <option value="" disabled selected>
-                      Selecciona un vehículo
-                    </option>
-                    <option *ngFor="let v of vehiculos" [value]="v.id">
+                    <option [ngValue]="null">Sin vehículo</option>
+                    <option *ngFor="let v of vehiculos" [ngValue]="v.id">
                       {{ v.marca }} {{ v.modelo }} ({{ v.placa }})
                     </option>
                   </select>
@@ -233,12 +230,9 @@
                     class="mb-2 w-full p-2 border rounded"
                     [(ngModel)]="nuevoPaquete.hotel_id"
                     name="hotel_id"
-                    required
                   >
-                    <option value="" disabled selected>
-                      Selecciona un hotel
-                    </option>
-                    <option *ngFor="let h of hoteles" [value]="h.id">
+                    <option [ngValue]="null">Sin hotel</option>
+                    <option *ngFor="let h of hoteles" [ngValue]="h.id">
                       {{ h.nombre }} ({{ h.ciudad }})
                     </option>
                   </select>
@@ -250,10 +244,10 @@
                     name="ruta_id"
                     required
                   >
-                    <option value="" disabled selected>
+                    <option [ngValue]="null" disabled selected>
                       Selecciona una ruta
                     </option>
-                    <option *ngFor="let r of rutas" [value]="r.id">
+                    <option *ngFor="let r of rutas" [ngValue]="r.id">
                       {{ r.nombre_ruta }}
                     </option>
                   </select>
@@ -263,12 +257,9 @@
                     class="mb-2 w-full p-2 border rounded"
                     [(ngModel)]="nuevoPaquete.promocion_id"
                     name="promocion_id"
-                    required
                   >
-                    <option value="" disabled selected>
-                      Selecciona una promoción
-                    </option>
-                    <option *ngFor="let p of promociones" [value]="p.id">
+                    <option [ngValue]="null">Sin promoción</option>
+                    <option *ngFor="let p of promociones" [ngValue]="p.id">
                       {{ p.nombre }}
                     </option>
                   </select>

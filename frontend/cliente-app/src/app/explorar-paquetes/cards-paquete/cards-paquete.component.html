@@ -1,0 +1,58 @@
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+  <div
+    *ngFor="let paquete of paquetes"
+    class="bg-white rounded-2xl shadow-xl p-0 flex flex-col justify-between border-2 border-transparent hover:border-blue-400 transition-all duration-300"
+  >
+    <img
+      [src]="paquete.imagenUrl"
+      alt="Imagen paquete"
+      class="rounded-t-2xl w-full h-56 object-cover"
+    />
+
+    <div class="p-5 flex flex-col flex-1">
+      <h3 class="text-lg font-bold mb-2 text-gray-800">{{ paquete.nombre }}</h3>
+      <p class="mb-4 text-gray-600">{{ paquete.descripcion }}</p>
+
+      <div class="mt-auto">
+        <div class="flex items-center mb-2 space-x-2">
+          <svg
+            class="w-5 h-5 text-blue-500"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.561-.955L10 0l2.951 5.955 6.561.955-4.756 4.635 1.122 6.545z"
+            />
+          </svg>
+          <span class="text-sm text-gray-700 font-semibold">{{
+            paquete.calificacion || "5.0 Superb"
+          }}</span>
+        </div>
+        <div class="flex items-center mb-2 space-x-2">
+          <svg
+            class="w-5 h-5 text-blue-500"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path d="M10 20s8-4.5 8-10A8 8 0 1 0 2 10c0 5.5 8 10 8 10z" />
+          </svg>
+          <span class="text-sm text-blue-600 font-semibold">{{
+            paquete.destino || paquete.ruta
+          }}</span>
+        </div>
+        <div class="flex items-center justify-between mt-4">
+          <span class="text-blue-600 font-bold text-lg"
+            >${{ paquete.precio_total }}</span
+          >
+          <button
+            class="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-all"
+            [routerLink]="['/carrito']"
+            [queryParams]="{ paqueteId: paquete.id }"
+          >
+            Reservar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

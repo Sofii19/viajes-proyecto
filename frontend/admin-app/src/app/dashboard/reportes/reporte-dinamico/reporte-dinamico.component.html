@@ -1,5 +1,7 @@
 <div class="bg-white rounded-xl shadow-lg p-8">
-  <h2 class="text-2xl font-bold mb-6 bg-gradient-to-tl from-purple-700 to-pink-500 bg-clip-text text-transparent flex items-center gap-2">
+  <h2
+    class="text-2xl font-bold mb-6 bg-gradient-to-tl from-purple-700 to-pink-500 bg-clip-text text-transparent flex items-center gap-2"
+  >
     <i class="fa-solid fa-chart-line text-purple-500"></i>
     Reporte de Ventas por Rango de Fechas
   </h2>
@@ -18,31 +20,65 @@
       class="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-300"
       placeholder="Fecha fin"
     />
-    <button class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded shadow" (click)="filtrarVentas()">
+    <button
+      class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded shadow"
+      (click)="filtrarVentas()"
+    >
       <i class="fa-solid fa-filter"></i> Filtrar
     </button>
+  </div>
+  <!-- Puedes ponerlo justo antes o después de la tabla -->
+  <div class="mt-4 text-right">
+    <span class="text-lg font-bold text-purple-700">
+      Ganancias Totales: ${{ totalGanancias | number : "1.2-2" }}
+    </span>
   </div>
 
   <!-- Tabla de ventas -->
   <div class="overflow-x-auto">
-    <table class="min-w-full text-left border rounded-xl overflow-hidden shadow">
+    <table
+      class="min-w-full text-left border rounded-xl overflow-hidden shadow"
+    >
       <thead>
         <tr class="bg-purple-100 text-purple-700">
-          <th class="px-4 py-3 border-b"><i class="fa-solid fa-box"></i> Paquete</th>
-          <th class="px-4 py-3 border-b"><i class="fa-solid fa-user"></i> Cliente</th>
-          <th class="px-4 py-3 border-b"><i class="fa-solid fa-calendar-day"></i> Fecha de Pago</th>
-          <th class="px-4 py-3 border-b"><i class="fa-solid fa-users"></i> Personas</th>
-          <th class="px-4 py-3 border-b"><i class="fa-solid fa-dollar-sign"></i> Monto</th>
-          <th class="px-4 py-3 border-b"><i class="fa-solid fa-credit-card"></i> Método</th>
+          <th class="px-4 py-3 border-b">
+            <i class="fa-solid fa-box"></i> Paquete
+          </th>
+          <th class="px-4 py-3 border-b">
+            <i class="fa-solid fa-user"></i> Cliente
+          </th>
+          <th class="px-4 py-3 border-b">
+            <i class="fa-solid fa-calendar-day"></i> Fecha de Pago
+          </th>
+          <th class="px-4 py-3 border-b">
+            <i class="fa-solid fa-users"></i> Personas
+          </th>
+          <th class="px-4 py-3 border-b">
+            <i class="fa-solid fa-dollar-sign"></i> Monto
+          </th>
+          <th class="px-4 py-3 border-b">
+            <i class="fa-solid fa-credit-card"></i> Método
+          </th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let venta of ventasFiltradas" class="hover:bg-purple-50 transition">
-          <td class="px-4 py-3 border-b font-semibold text-purple-700">{{ venta.paquete_nombre }}</td>
-          <td class="px-4 py-3 border-b">{{ venta.cliente_nombre }} {{ venta.cliente_apellido }}</td>
-          <td class="px-4 py-3 border-b">{{ venta.fecha_pago | date:'shortDate' }}</td>
+        <tr
+          *ngFor="let venta of ventasFiltradas"
+          class="hover:bg-purple-50 transition"
+        >
+          <td class="px-4 py-3 border-b font-semibold text-purple-700">
+            {{ venta.paquete_nombre }}
+          </td>
+          <td class="px-4 py-3 border-b">
+            {{ venta.cliente_nombre }} {{ venta.cliente_apellido }}
+          </td>
+          <td class="px-4 py-3 border-b">
+            {{ venta.fecha_pago | date : "shortDate" }}
+          </td>
           <td class="px-4 py-3 border-b">{{ venta.cantidad_personas }}</td>
-          <td class="px-4 py-3 border-b text-green-600 font-bold">${{ venta.monto }}</td>
+          <td class="px-4 py-3 border-b text-green-600 font-bold">
+            ${{ venta.monto }}
+          </td>
           <td class="px-4 py-3 border-b">{{ venta.metodo_pago }}</td>
         </tr>
       </tbody>

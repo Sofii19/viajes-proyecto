@@ -93,15 +93,26 @@ export class PaquetesListComponent implements OnInit {
   }
 
   crearPaquete() {
-    this.paquetesService.createPaquete(this.nuevoPaquete).subscribe(() => {
+    // Elimina campos nulos o 0
+    const paqueteAEnviar = { ...this.nuevoPaquete };
+    Object.keys(paqueteAEnviar).forEach((key) => {
+      if (paqueteAEnviar[key] === null || paqueteAEnviar[key] === 0) {
+        delete paqueteAEnviar[key];
+      }
+    });
+
+    this.paquetesService.createPaquete(paqueteAEnviar).subscribe(() => {
       this.cargarPaquetes();
       this.cerrarModalCrear();
     });
   }
 
-  abrirModalEditar(paquete: any) {
-    this.paqueteEditar = { ...paquete };
-    this.mostrarModalEditar = true;
+  abrirModalEditar(id: number) {
+    const paquete = this.paquetes.find((p) => p.id === id);
+    if (paquete) {
+      this.paqueteEditar = { ...paquete };
+      this.mostrarModalEditar = true;
+    }
   }
 
   cerrarModalEditar() {
