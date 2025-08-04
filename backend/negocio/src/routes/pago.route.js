@@ -17,4 +17,7 @@ router.put('/:id', PagoController.actualizarPago);
 // Eliminar un pago por ID
 router.delete('/:id', PagoController.eliminarPago);
 
+// Reporte de pagos por rango de fechas
+router.get('/reporte', PagoController.reportePagosPorFechas);
+
 module.exports = router;
