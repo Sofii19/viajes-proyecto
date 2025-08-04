@@ -44,7 +44,7 @@ class PagoRepository {
     return result.rows[0];
   }
 
-    async reportePagosPorFechas(fechaInicio, fechaFin) {
+  async reportePagosPorFechas(fechaInicio, fechaFin) {
     const query = `
       SELECT
         pagos.id AS pago_id,
@@ -53,14 +53,13 @@ class PagoRepository {
         pagos.metodo_pago,
         reservas.cantidad_personas,
         reservas.estado,
-        paquetes.nombre AS paquete_nombre,
+        reservas.paquete_id,
         clientes.nombre AS cliente_nombre,
         clientes.apellido AS cliente_apellido,
         clientes.correo AS cliente_correo
       FROM pagos
       JOIN reservas ON pagos.reserva_id = reservas.id
       JOIN clientes ON reservas.cliente_id = clientes.id
-      JOIN paquetes ON reservas.paquete_id = paquetes.id
       WHERE pagos.fecha_pago BETWEEN $1 AND $2
       ORDER BY pagos.fecha_pago DESC
     `;

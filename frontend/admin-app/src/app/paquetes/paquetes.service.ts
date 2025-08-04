@@ -3,10 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PaquetesService {
-
   private apiUrl = 'http://localhost:3002/api/paquetes';
 
   constructor(private http: HttpClient) {}
@@ -25,5 +24,9 @@ export class PaquetesService {
 
   deletePaquete(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
+
+  getPaquetePorId(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 }
