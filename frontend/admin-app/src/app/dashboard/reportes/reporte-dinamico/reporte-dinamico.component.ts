@@ -33,4 +33,8 @@ export class ReporteDinamicoComponent implements OnInit {
         });
     }
   }
+
+  get totalGanancias(): number {
+  return this.ventasFiltradas.reduce((acc, venta) => acc + Number(venta.monto), 0);
+}
 }
