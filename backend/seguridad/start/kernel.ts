@@ -32,7 +32,7 @@ server.use([
  * The router middleware stack runs middleware on all the HTTP
  * requests with a registered route.
  */
-router.use([() => import('@adonisjs/core/bodyparser_middleware')])
+router.use([() => import('@adonisjs/core/bodyparser_middleware'), () => import('@adonisjs/auth/initialize_auth_middleware')])
 
 /**
  * Named middleware collection must be explicitly assigned to
@@ -40,6 +40,7 @@ router.use([() => import('@adonisjs/core/bodyparser_middleware')])
  */
 
 export const middleware = router.named({
+  auth: () => import('#middleware/auth_middleware'),
   verificarPermiso: () => import('#middleware/verificar_permiso_middleware'),
   verificarRol: () => import('#middleware/verificar_rol_middleware'),
   verificarJWT: () => import('#middleware/verificar_jwt_middleware')

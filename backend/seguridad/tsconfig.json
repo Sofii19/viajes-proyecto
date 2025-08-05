@@ -3,6 +3,9 @@
   "compilerOptions": {
     "rootDir": "./",
     "outDir": "./build",
-    "types": ["./contracts/context"]
+    "types": [
+      "./contracts/context",
+      "@adonisjs/auth"
+    ]
   }
 }

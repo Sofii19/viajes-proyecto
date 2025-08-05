@@ -10,5 +10,6 @@ export const registroUsuarioValidator = vine.compile(
     password: vine.string().minLength(6),
     rol: vine.enum(['cliente', 'administrador']).optional(),
     activo: vine.boolean().optional(), // Opcional
+    twofaActivo: vine.boolean().optional(), // 👈 añadir esto
   })
 )

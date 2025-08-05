@@ -48,8 +48,17 @@ export default class Usuario extends BaseModel {
   declare microsoftId?: string
 
   // 2FA
-  @column()
+  @column({ columnName: 'twofa_secret' })
   declare twofaSecret?: string
+
+  @column({ columnName: 'codigo_2fa' })
+  declare codigo2fa?: string
+
+  @column.dateTime({ columnName: 'codigo_2fa_expira_en' })
+  declare expiracionCodigo2fa?: DateTime
+
+  @column({ columnName: 'twofa_activo' })
+  declare twofaActivo: boolean
 
   @column()
   declare activo: boolean

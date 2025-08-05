@@ -1,4 +1,4 @@
-CREATE DATABASE reservas_db;
+CREATE DATABASE negocio_db;
 
 CREATE TABLE reservas (
   id SERIAL PRIMARY KEY,
