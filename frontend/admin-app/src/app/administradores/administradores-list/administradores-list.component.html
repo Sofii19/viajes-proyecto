@@ -1,0 +1,247 @@
+<div>
+  <div class="flex flex-wrap -mx-3">
+    <div class="flex-none w-full max-w-full px-3">
+      <div
+        class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border"
+      >
+        <div
+          class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent"
+        >
+          <h2
+            class="text-2xl font-bold mb-6 text-purple-700 flex items-center gap-2"
+          >
+            <i class="fa-solid fa-hotel text-purple-500"></i>
+            Administradores
+          </h2>
+        </div>
+        <div class="flex-auto px-0 pt-0 pb-2">
+          <div class="p-0 overflow-x-auto">
+            <table
+              class="items-center w-full mb-0 align-top border-gray-200 text-slate-500"
+            >
+              <thead class="align-bottom">
+                <tr>
+                  <th
+                    class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
+                  >
+                    Nombre
+                  </th>
+                  <th
+                    class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
+                  >
+                    Email
+                  </th>
+                  <th
+                    class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70"
+                  >
+                    Fecha de registro
+                  </th>
+                  <th>
+                    <button
+                      (click)="abrirModalCrear()"
+                      class="flex items-center justify-center w-7 h-7 bg-purple-500 text-white rounded-md hover:bg-purple-600 transition-colors"
+                      title="Crear"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 4v16m8-8H4"
+                        />
+                      </svg>
+                    </button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let administrador of administradores">
+                  <td
+                    class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent"
+                  >
+                    <div class="flex px-2 py-1">
+                      <div class="flex flex-col justify-center">
+                        <h6 class="mb-0 text-sm leading-normal">
+                          {{ administrador.primer_nombre }}
+                          {{ administrador.segundo_nombre }}
+                          {{ administrador.apellido_paterno }}
+                          {{ administrador.apellido_materno }}
+                        </h6>
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent"
+                  >
+                    <p class="mb-0 text-xs font-semibold leading-tight">
+                      {{ administrador.email }}
+                    </p>
+                  </td>
+                  <td
+                    class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent"
+                  >
+                    <span
+                      class="bg-gradient-to-tl from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white"
+                    >
+                      {{ administrador.fecha_registro | date : "shortDate" }}
+                    </span>
+                  </td>
+                  <td
+                    class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent"
+                  >
+                    <div class="flex flex-col items-center gap-1"></div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- Modal Crear Administrador -->
+            <div
+              *ngIf="mostrarModalCrear"
+              class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40"
+            >
+              <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
+                <h2 class="text-lg font-bold mb-4">Crear administrador</h2>
+                <form (ngSubmit)="crearAdministrador()">
+                  <input
+                    class="mb-2 w-full p-2 border rounded"
+                    placeholder="Primer nombre"
+                    [(ngModel)]="nuevoAdministrador.primer_nombre"
+                    name="primer_nombre"
+                    required
+                  />
+                  <input
+                    class="mb-2 w-full p-2 border rounded"
+                    placeholder="Segundo nombre"
+                    [(ngModel)]="nuevoAdministrador.segundo_nombre"
+                    name="segundo_nombre"
+                  />
+                  <input
+                    class="mb-2 w-full p-2 border rounded"
+                    placeholder="Apellido paterno"
+                    [(ngModel)]="nuevoAdministrador.apellido_paterno"
+                    name="apellido_paterno"
+                    required
+                  />
+                  <input
+                    class="mb-2 w-full p-2 border rounded"
+                    placeholder="Apellido materno"
+                    [(ngModel)]="nuevoAdministrador.apellido_materno"
+                    name="apellido_materno"
+                  />
+                  <input
+                    class="mb-2 w-full p-2 border rounded"
+                    type="email"
+                    placeholder="Email"
+                    [(ngModel)]="nuevoAdministrador.email"
+                    name="email"
+                    required
+                  />
+                  <input
+                    class="mb-2 w-full p-2 border rounded"
+                    type="password"
+                    placeholder="Contraseña"
+                    [(ngModel)]="nuevoAdministrador.Password"
+                    name="Password"
+                    required
+                  />
+                  <!-- rol_id oculto -->
+                  <input
+                    type="hidden"
+                    [(ngModel)]="nuevoAdministrador.rol_id"
+                    name="rol_id"
+                  />
+
+                  <div class="flex justify-end gap-2 mt-4">
+                    <button
+                      type="button"
+                      (click)="cerrarModalCrear()"
+                      class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      type="submit"
+                      class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+                    >
+                      Crear
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- Modal Editar Administrador -->
+            <!-- <div
+              *ngIf="mostrarModalEditar"
+              class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40"
+            >
+              <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
+                <h2 class="text-lg font-bold mb-4">Actualizar Hotel</h2>
+                <form (ngSubmit)="actualizarHotel()">
+                  <input
+                    class="mb-2 w-full p-2 border rounded"
+                    placeholder="Nombre"
+                    [(ngModel)]="hotelEditar.nombre"
+                    name="nombreEditar"
+                    required
+                  />
+                  <input
+                    class="mb-2 w-full p-2 border rounded"
+                    placeholder="Dirección"
+                    [(ngModel)]="hotelEditar.direccion"
+                    name="direccionEditar"
+                    required
+                  />
+                  <input
+                    class="mb-2 w-full p-2 border rounded"
+                    placeholder="Ciudad"
+                    [(ngModel)]="hotelEditar.ciudad"
+                    name="ciudadEditar"
+                    required
+                  />
+                  <input
+                    class="mb-2 w-full p-2 border rounded"
+                    type="number"
+                    placeholder="Estrellas"
+                    [(ngModel)]="hotelEditar.estrellas"
+                    name="estrellasEditar"
+                    required
+                    min="1"
+                    max="5"
+                  />
+                  <textarea
+                    class="mb-2 w-full p-2 border rounded"
+                    placeholder="Descripción"
+                    [(ngModel)]="hotelEditar.descripcion"
+                    name="descripcionEditar"
+                  ></textarea>
+                  <div class="flex justify-end gap-2 mt-4">
+                    <button
+                      type="button"
+                      (click)="cerrarModalEditar()"
+                      class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      type="submit"
+                      class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                    >
+                      Actualizar
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -80,7 +80,7 @@
           </div>
           <span
             class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-            >Dashboard</span
+            >Panel de control</span
           >
         </a>
       </li>
@@ -196,10 +196,18 @@
 
       <li class="mt-0.5 w-full">
         <a
+          routerLink="/clientes"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+          #rlaClientes="routerLinkActive"
           class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-          href="../pages/virtual-reality.html"
         >
           <div
+            [ngClass]="
+              rlaClientes.isActive
+                ? 'bg-gradient-to-tl from-purple-700 to-pink-500'
+                : 'bg-white'
+            "
             class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
           >
             <svg
@@ -239,17 +247,25 @@
           </div>
           <span
             class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-            >Virtual Reality</span
+            >Clientes</span
           >
         </a>
       </li>
 
       <li class="mt-0.5 w-full">
         <a
+          routerLink="/administradores"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+          #rlaAdmins="routerLinkActive"
           class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-          href="../pages/rtl.html"
         >
           <div
+            [ngClass]="
+              rlaAdmins.isActive
+                ? 'bg-gradient-to-tl from-purple-700 to-pink-500'
+                : 'bg-white'
+            "
             class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
           >
             <svg
@@ -289,7 +305,7 @@
           </div>
           <span
             class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-            >RTL</span
+            >Admins</span
           >
         </a>
       </li>
@@ -304,10 +320,18 @@
 
       <li class="mt-0.5 w-full">
         <a
+          routerLink="/profile"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+          #rlaProfile="routerLinkActive"
           class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-          href="../pages/profile.html"
         >
           <div
+            [ngClass]="
+              rlaProfile.isActive
+                ? 'bg-gradient-to-tl from-purple-700 to-pink-500'
+                : 'bg-white'
+            "
             class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
           >
             <svg
@@ -347,7 +371,7 @@
           </div>
           <span
             class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-            >Profile</span
+            >Perfil</span
           >
         </a>
       </li>

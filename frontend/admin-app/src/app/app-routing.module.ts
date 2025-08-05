@@ -4,14 +4,19 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  // Redirección raíz
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
-  // Login y registro fuera del layout principal
-  { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) },
-  { path: 'registro', loadChildren: () => import('./registro/registro.module').then(m => m.RegistroModule) },
+  {
+    path: 'login',
+    loadChildren: () =>
+      import('./login/login.module').then((m) => m.LoginModule),
+  },
+  {
+    path: 'registro',
+    loadChildren: () =>
+      import('./registro/registro.module').then((m) => m.RegistroModule),
+  },
 
-  // Rutas protegidas bajo el layout principal
   {
     path: '',
     component: MainLayoutComponent,
@@ -32,9 +37,25 @@ const routes: Routes = [
         loadChildren: () =>
           import('./paquetes/paquetes.module').then((m) => m.PaquetesModule),
       },
-      // ...otras rutas protegidas
+      {
+        path: 'clientes',
+        loadChildren: () =>
+          import('./clientes/clientes.module').then((m) => m.ClientesModule),
+      },
+      {
+        path: 'administradores',
+        loadChildren: () =>
+          import('./administradores/administradores.module').then(
+            (m) => m.AdministradoresModule
+          ),
+      },
+      {
+        path: 'profile',
+        loadChildren: () =>
+          import('./profile/profile.module').then((m) => m.ProfileModule),
+      },
     ],
-  }
+  },
 ];
 
 @NgModule({
