@@ -1,8 +1,8 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { cuid } from '@adonisjs/core/helpers'
 import hash from '@adonisjs/core/services/hash'
-import { DateTime } from 'luxon'
 import jwt from 'jsonwebtoken'
+import { DateTime } from 'luxon'
 
 import Usuario from '#models/usuario'
 import Activacion from '#models/activacion'
@@ -10,8 +10,6 @@ import Rol from '#models/rol'
 
 import { registroUsuarioValidator } from '#validators/registrar_usuario'
 import { loginUsuarioValidator } from '#validators/login_usuario'
-import { codigo2faValidator } from '#validators/codigo_2_fa'
-
 import { enviarCorreoActivacion, enviarCodigo2FA } from '../utils/email.js'
 import { generarCodigo2FA } from '../utils/codigo2fa.js'
 
@@ -68,38 +66,6 @@ export default class AuthController {
     })
   }
 
-  public async activarCuenta({ params, response }: HttpContext) {
-    const { token } = params
-
-    const activacion = await Activacion.query()
-      .where('token', token)
-      .andWhere('usado', false)
-      .first()
-
-    if (!activacion) {
-      return response.status(400).json({
-        mensaje: 'Token inválido o ya ha sido utilizado.',
-      })
-    }
-
-    const usuario = await Usuario.findOrFail(activacion.usuario_id)
-    usuario.activo = true
-    await usuario.save()
-
-    activacion.usado = true
-    await activacion.save()
-
-    return response.send(`
-      <html>
-        <head><title>Cuenta activada</title></head>
-        <body style="font-family: Arial; text-align: center; margin-top: 50px;">
-        <h2 style="color: green;">¡Tu cuenta ha sido activada correctamente!</h2>
-        <p>Ya puedes iniciar sesión en la plataforma.</p>
-        </body>
-      </html>
-    `)
-  }
-
   public async login({ request, response }: HttpContext) {
     const datos = await request.validateUsing(loginUsuarioValidator)
 
@@ -122,12 +88,7 @@ export default class AuthController {
     }
 
     if (!usuario.twofaActivo) {
-      const payload = {
-        sub: usuario.id,
-        email: usuario.email,
-        rol: usuario.rol.nombre,
-      }
-
+      const payload = { sub: usuario.id, email: usuario.email, rol: usuario.rol.nombre }
       const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' })
 
       return response.ok({
@@ -141,7 +102,6 @@ export default class AuthController {
       })
     }
 
-    // Si el usuario tiene 2FA activado
     const codigo = generarCodigo2FA()
     const expiracion = DateTime.now().plus({ minutes: 5 })
 
@@ -157,54 +117,9 @@ export default class AuthController {
     }
 
     return response.status(202).json({
-      mensaje: 'Código de verificación enviado. Verifica tu correo para completar el inicio de sesión.',
+      mensaje: 'Ingresa el codigo de Authenticator Google',
       requiere2fa: true,
       usuario_id: usuario.id,
-    })
-  }
-
-  public async verificarCodigo2fa({ request, response }: HttpContext) {
-    const datos = await request.validateUsing(codigo2faValidator)
-
-    const usuario = await Usuario.query()
-      .where('id', datos.usuario_id)
-      .preload('rol')
-      .first()
-
-    if (!usuario || !usuario.codigo2fa || !usuario.expiracionCodigo2fa) {
-      return response.status(400).json({ mensaje: 'Código inválido o expirado' })
-    }
-
-    if (usuario.codigo2fa !== datos.codigo) {
-      return response.status(401).json({ mensaje: 'Código de verificación incorrecto' })
-    }
-
-    if (usuario.expiracionCodigo2fa < DateTime.now()) {
-      return response.status(401).json({ mensaje: 'El código ha expirado' })
-    }
-
-    // Código correcto, generamos JWT
-    const payload = {
-      sub: usuario.id,
-      email: usuario.email,
-      rol: usuario.rol.nombre,
-    }
-
-    const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' })
-
-    // Limpiamos el código de 2FA
-    usuario.codigo2fa = undefined
-    usuario.expiracionCodigo2fa = undefined
-    await usuario.save()
-
-    return response.ok({
-      mensaje: 'Autenticación completada exitosamente.',
-      token,
-      usuario: {
-        id: usuario.id,
-        email: usuario.email,
-        rol: usuario.rol.nombre,
-      },
     })
   }
 }

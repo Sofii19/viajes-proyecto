@@ -48,6 +48,9 @@ export default class Usuario extends BaseModel {
   declare microsoftId?: string
 
   // 2FA
+  @column({ columnName: 'twofa_secret' })
+  declare twofaSecret?: string
+
   @column({ columnName: 'codigo_2fa' })
   declare codigo2fa?: string
 
