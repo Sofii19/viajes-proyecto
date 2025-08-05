@@ -14,7 +14,7 @@ import { enviarCorreoActivacion, enviarCodigo2FA } from '../utils/email.js'
 import { generarCodigo2FA } from '../utils/codigo2fa.js'
 
 export default class AuthController {
-  public async register({ request, response }: HttpContext) {
+  public async registerCliente({ request, response }: HttpContext) {
     const datos = await request.validateUsing(registroUsuarioValidator)
 
     const existe = await Usuario.findBy('email', datos.email)
@@ -66,13 +66,62 @@ export default class AuthController {
     })
   }
 
+  public async registerAdmin({ request, response }: HttpContext) {
+    const datos = await request.validateUsing(registroUsuarioValidator)
+
+    const existe = await Usuario.findBy('email', datos.email)
+    if (existe) {
+      return response.status(400).json({ mensaje: 'El correo electrónico ya está registrado' })
+    }
+
+    const rol = await Rol.findBy('nombre', 'administrador')
+    if (!rol) {
+      return response.status(400).json({ mensaje: 'El rol especificado no es válido' })
+    }
+
+    const usuario = await Usuario.create({
+      primerNombre: datos.primerNombre,
+      segundoNombre: datos.segundoNombre || undefined,
+      apellidoPaterno: datos.apellidoPaterno,
+      apellidoMaterno: datos.apellidoMaterno || undefined,
+      email: datos.email,
+      password: await hash.make(datos.password),
+      activo: true,
+      rolId: rol.id,
+    })
+
+    const token = cuid()
+    await Activacion.create({
+      usuario_id: usuario.id,
+      token,
+      usado: false,
+      fecha_creacion: new Date(),
+    })
+
+    try {
+      await enviarCorreoActivacion(usuario.email, token)
+    } catch (error) {
+      console.error('Error al enviar el correo de activación:', error)
+      return response.status(500).json({
+        mensaje: 'El usuario fue creado, pero no se pudo enviar el correo de activación.',
+      })
+    }
+
+    return response.created({
+      mensaje: 'Administrador registrado correctamente.',
+      usuario: {
+        id: usuario.id,
+        email: usuario.email,
+        rol: rol.nombre,
+        activo: usuario.activo,
+      },
+    })
+  }
+
   public async login({ request, response }: HttpContext) {
     const datos = await request.validateUsing(loginUsuarioValidator)
 
-    const usuario = await Usuario.query()
-      .where('email', datos.email)
-      .preload('rol')
-      .first()
+    const usuario = await Usuario.query().where('email', datos.email).preload('rol').first()
 
     if (!usuario) {
       return response.status(401).json({ mensaje: 'Usuario no existe' })

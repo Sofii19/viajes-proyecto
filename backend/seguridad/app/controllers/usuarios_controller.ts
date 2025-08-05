@@ -39,10 +39,10 @@ export default class UsuariosController {
 
     const rol = await Rol.findBy('nombre', datos.rol)
     if (!rol) {
-    return response.status(400).json({
-      mensaje: 'El rol especificado no existe',
-    })
-  }
+      return response.status(400).json({
+        mensaje: 'El rol especificado no existe',
+      })
+    }
 
     const datosCompatibles = {
       ...datos,
@@ -61,27 +61,27 @@ export default class UsuariosController {
     })
   }
 
-    // PUT /usuarios/:id
-    async update({ params, request, response }: HttpContext) {
+  // PUT /usuarios/:id
+  async update({ params, request, response }: HttpContext) {
     const usuario = await Usuario.find(params.id)
     if (!usuario) {
-        return response.notFound({ mensaje: 'Usuario no encontrado' })
+      return response.notFound({ mensaje: 'Usuario no encontrado' })
     }
 
     const datosValidados = await request.validateUsing(actualizarUsuarioValidator)
 
     // Convertir null a undefined en campos opcionales
     if (datosValidados.segundoNombre === null) {
-        datosValidados.segundoNombre = undefined
+      datosValidados.segundoNombre = undefined
     }
 
     if (datosValidados.apellidoMaterno === null) {
-        datosValidados.apellidoMaterno = undefined
+      datosValidados.apellidoMaterno = undefined
     }
 
     // Eliminar claves con valor null (por seguridad extra)
     const datosCompatibles = Object.fromEntries(
-        Object.entries(datosValidados).filter(([_, v]) => v !== null)
+      Object.entries(datosValidados).filter(([_, v]) => v !== null)
     )
 
     usuario.merge(datosCompatibles)
@@ -89,10 +89,10 @@ export default class UsuariosController {
     await usuario.load('rol')
 
     return response.ok({
-        mensaje: 'Usuario actualizado correctamente',
-        usuario,
+      mensaje: 'Usuario actualizado correctamente',
+      usuario,
     })
-    }
+  }
 
   // DELETE /usuarios/:id
   async destroy({ params, response }: HttpContext) {

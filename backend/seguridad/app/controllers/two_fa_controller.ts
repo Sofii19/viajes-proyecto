@@ -23,11 +23,7 @@ export default class TwoFactorAuthController {
       await usuario.save()
     }
 
-    const otpauth = authenticator.keyuri(
-      usuario.email,
-      'Agencia de Viajes',
-      usuario.twofaSecret
-    )
+    const otpauth = authenticator.keyuri(usuario.email, 'Agencia de Viajes', usuario.twofaSecret)
 
     const qr = await qrcode.toDataURL(otpauth)
 
@@ -114,12 +110,10 @@ export default class TwoFactorAuthController {
       return response.unauthorized({ mensaje: 'Código 2FA inválido' })
     }
 
-    const { default: jwt } = await import('jsonwebtoken')  // <--- esto es lo que faltaba
-    const token = jwt.sign(
-      { sub: usuario.id, email: usuario.email },
-      process.env.JWT_SECRET!,
-      { expiresIn: '1h' }
-    )
+    const { default: jwt } = await import('jsonwebtoken') // <--- esto es lo que faltaba
+    const token = jwt.sign({ sub: usuario.id, email: usuario.email }, process.env.JWT_SECRET!, {
+      expiresIn: '1h',
+    })
 
     return response.ok({
       mensaje: 'Código verificado correctamente',
