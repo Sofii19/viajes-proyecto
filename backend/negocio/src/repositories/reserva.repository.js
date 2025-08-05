@@ -2,36 +2,51 @@ const pool = require('../config/db');
 
 class ReservaRepository {
   async crearReserva(reserva) {
-    const { cliente_id, paquete_id, cantidad_personas } = reserva;
+    const { titular_id, paquete_id, cantidad_personas, fecha_viaje, estado_id } = reserva;
     const query = `
-      INSERT INTO reservas (cliente_id, paquete_id, cantidad_personas)
-      VALUES ($1, $2, $3)
+      INSERT INTO reservas (titular_id, paquete_id, cantidad_personas, fecha_viaje, estado_id)
+      VALUES ($1, $2, $3, $4, $5)
       RETURNING *;
     `;
-    const values = [cliente_id, paquete_id, cantidad_personas];
+    const values = [titular_id, paquete_id, cantidad_personas, fecha_viaje, estado_id];
     const { rows } = await pool.query(query, values);
     return rows[0];
   }
 
   async obtenerReservas() {
-    const { rows } = await pool.query('SELECT * FROM reservas');
+    const query = `
+      SELECT r.*, e.nombre AS estado
+      FROM reservas r
+      JOIN estado_reserva e ON r.estado_id = e.id
+      ORDER BY r.id ASC;
+    `;
+    const { rows } = await pool.query(query);
     return rows;
   }
 
   async obtenerReservaPorId(id) {
-    const { rows } = await pool.query('SELECT * FROM reservas WHERE id = $1', [id]);
+    const query = `
+      SELECT r.*, e.nombre AS estado
+      FROM reservas r
+      JOIN estado_reserva e ON r.estado_id = e.id
+      WHERE r.id = $1;
+    `;
+    const { rows } = await pool.query(query, [id]);
     return rows[0];
   }
 
   async actualizarReserva(id, datos) {
-    const { cliente_id, paquete_id, cantidad_personas, fecha_reserva, estado } = datos;
+    const { paquete_id, cantidad_personas, fecha_viaje, estado_id } = datos;
     const query = `
       UPDATE reservas
-      SET cliente_id = $1, paquete_id = $2, cantidad_personas = $3, fecha_reserva = $5, estado = $6
-      WHERE id = $4
+      SET paquete_id = $1,
+          cantidad_personas = $2,
+          fecha_viaje = $3,
+          estado_id = $4
+      WHERE id = $5
       RETURNING *;
     `;
-    const values = [cliente_id, paquete_id, cantidad_personas, id, fecha_reserva, estado];
+    const values = [paquete_id, cantidad_personas, fecha_viaje, estado_id, id];
     const { rows } = await pool.query(query, values);
     return rows[0];
   }

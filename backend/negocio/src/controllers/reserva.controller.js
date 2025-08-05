@@ -1,4 +1,3 @@
-// src/controllers/reserva.controller.js
 const ReservaService = require('../services/reserva.service');
 
 class ReservaController {
@@ -7,7 +6,7 @@ class ReservaController {
       const nuevaReserva = await ReservaService.crearReserva(req.body);
       res.status(201).json(nuevaReserva);
     } catch (error) {
-      console.error('❌ Error al crear reserva:', error.message);
+      console.error('Error al crear reserva:', error.message);
       res.status(500).json({ mensaje: 'Error al crear reserva', error: error.message });
     }
   }
@@ -17,7 +16,7 @@ class ReservaController {
       const reservas = await ReservaService.obtenerReservas();
       res.status(200).json(reservas);
     } catch (error) {
-      console.error('❌ Error al obtener reservas:', error.message);
+      console.error('Error al obtener reservas:', error.message);
       res.status(500).json({ mensaje: 'Error al obtener reservas', error: error.message });
     }
   }
@@ -28,7 +27,7 @@ class ReservaController {
       const reserva = await ReservaService.obtenerReservaPorId(id);
       res.status(200).json(reserva);
     } catch (error) {
-      console.error('❌ Error al obtener reserva por ID:', error.message);
+      console.error('Error al obtener reserva por ID:', error.message);
       res.status(404).json({ mensaje: 'Reserva no encontrada', error: error.message });
     }
   }
@@ -37,11 +36,10 @@ class ReservaController {
     try {
       const { id } = req.params;
       const data = req.body;
-      console.log(req.body);
       const reservaActualizada = await ReservaService.actualizarReserva(id, data);
       res.status(200).json(reservaActualizada);
     } catch (error) {
-      console.error('❌ Error al actualizar reserva:', error.message);
+      console.error('Error al actualizar reserva:', error.message);
       res.status(500).json({ mensaje: 'Error al actualizar reserva', error: error.message });
     }
   }
@@ -52,7 +50,7 @@ class ReservaController {
       await ReservaService.eliminarReserva(id);
       res.status(204).send();
     } catch (error) {
-      console.error('❌ Error al eliminar reserva:', error.message);
+      console.error('Error al eliminar reserva:', error.message);
       res.status(500).json({ mensaje: 'Error al eliminar reserva', error: error.message });
     }
   }
