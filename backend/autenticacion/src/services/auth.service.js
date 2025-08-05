@@ -5,7 +5,7 @@ const speakeasy = require("speakeasy");
 const UsuariosRepository = require("../repositories/usuarios.repository");
 const ActivacionesRepository = require("../repositories/activaciones.repository");
 
-const JWT_SECRET = process.env.JWT_SECRET || "secreto";
+const JWT_SECRET = process.env.JWT_SECRET;
 const ACTIVACION_EXPIRACION = 60 * 60 * 24;
 
 const transporter = nodemailer.createTransport({
