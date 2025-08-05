@@ -42,13 +42,10 @@
             role="tablist"
           >
             <li class="z-30 flex-auto text-center">
-              <a
+              <button
                 class="z-30 block w-full px-0 py-1 mb-0 transition-all border-0 rounded-lg ease-soft-in-out bg-inherit text-slate-700"
-                nav-link
-                active
-                href="javascript:;"
-                role="tab"
-                aria-selected="true"
+                (click)="logout()"
+                style="background: none"
               >
                 <svg
                   class="text-slate-700"
@@ -91,16 +88,14 @@
                     </g>
                   </g>
                 </svg>
-                <span class="ml-1">App</span>
-              </a>
+                <span class="ml-1">Cerrar sesión</span>
+              </button>
             </li>
             <li class="z-30 flex-auto text-center">
-              <a
+              <button
                 class="z-30 block w-full px-0 py-1 mb-0 transition-all border-0 rounded-lg ease-soft-in-out bg-inherit text-slate-700"
-                nav-link
-                href="javascript:;"
-                role="tab"
-                aria-selected="false"
+                (click)="eliminarCuenta()"
+                style="background: none"
               >
                 <svg
                   class="text-slate-700"
@@ -139,61 +134,8 @@
                     </g>
                   </g>
                 </svg>
-                <span class="ml-1">Messages</span>
-              </a>
-            </li>
-            <li class="z-30 flex-auto text-center">
-              <a
-                class="z-30 block w-full px-0 py-1 mb-0 transition-colors border-0 rounded-lg ease-soft-in-out bg-inherit text-slate-700"
-                nav-link
-                href="javascript:;"
-                role="tab"
-                aria-selected="false"
-              >
-                <svg
-                  class="text-slate-700"
-                  width="16px"
-                  height="16px"
-                  viewBox="0 0 40 40"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                >
-                  <title>settings</title>
-                  <g
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <g
-                      transform="translate(-2020.000000, -442.000000)"
-                      fill="#FFFFFF"
-                      fill-rule="nonzero"
-                    >
-                      <g transform="translate(1716.000000, 291.000000)">
-                        <g transform="translate(304.000000, 151.000000)">
-                          <polygon
-                            class="fill-slate-800"
-                            opacity="0.596981957"
-                            points="18.0883333 15.7316667 11.1783333 8.82166667 13.3333333 6.66666667 6.66666667 0 0 6.66666667 6.66666667 13.3333333 8.82166667 11.1783333 15.315 17.6716667"
-                          ></polygon>
-                          <path
-                            class="fill-slate-800"
-                            d="M31.5666667,23.2333333 C31.0516667,23.2933333 30.53,23.3333333 30,23.3333333 C29.4916667,23.3333333 28.9866667,23.3033333 28.48,23.245 L22.4116667,30.7433333 L29.9416667,38.2733333 C32.2433333,40.575 35.9733333,40.575 38.275,38.2733333 L38.275,38.2733333 C40.5766667,35.9716667 40.5766667,32.2416667 38.275,29.94 L31.5666667,23.2333333 Z"
-                            opacity="0.596981957"
-                          ></path>
-                          <path
-                            class="fill-slate-800"
-                            d="M33.785,11.285 L28.715,6.215 L34.0616667,0.868333333 C32.82,0.315 31.4483333,0 30,0 C24.4766667,0 20,4.47666667 20,10 C20,10.99 20.1483333,11.9433333 20.4166667,12.8466667 L2.435,27.3966667 C0.95,28.7083333 0.0633333333,30.595 0.00333333333,32.5733333 C-0.0583333333,34.5533333 0.71,36.4916667 2.11,37.89 C3.47,39.2516667 5.27833333,40 7.20166667,40 C9.26666667,40 11.2366667,39.1133333 12.6033333,37.565 L27.1533333,19.5833333 C28.0566667,19.8516667 29.01,20 30,20 C35.5233333,20 40,15.5233333 40,10 C40,8.55166667 39.685,7.18 39.1316667,5.93666667 L33.785,11.285 Z"
-                          ></path>
-                        </g>
-                      </g>
-                    </g>
-                  </g>
-                </svg>
-                <span class="ml-1">Settings</span>
-              </a>
+                <span class="ml-1">Eliminar Cuenta</span>
+              </button>
             </li>
           </ul>
         </div>
@@ -220,109 +162,36 @@
             >
               <div class="min-h-6 mb-0.5 block pl-0">
                 <input
-                  id="follow"
+                  id="twofa"
                   class="mt-0.54 rounded-10 duration-250 ease-soft-in-out after:rounded-circle after:shadow-soft-2xl after:duration-250 checked:after:translate-x-5.25 h-5 relative float-left ml-auto w-10 cursor-pointer appearance-none border border-solid border-gray-200 bg-slate-800/10 bg-none bg-contain bg-left bg-no-repeat align-top transition-all after:absolute after:top-px after:h-4 after:w-4 after:translate-x-px after:bg-white after:content-[''] checked:border-slate-800/95 checked:bg-slate-800/95 checked:bg-none checked:bg-right"
                   type="checkbox"
-                  checked
+                  [checked]="usuario?.twofa"
+                  (change)="onTwofaChange($event)"
                 />
                 <label
-                  for="follow"
+                  for="twofa"
                   class="w-4/5 mb-0 ml-4 overflow-hidden font-normal cursor-pointer select-none text-sm text-ellipsis whitespace-nowrap text-slate-500"
-                  for="flexSwitchCheckDefault"
-                  >Email me when someone follows me</label
-                >
-              </div>
-            </li>
-            <li class="relative block px-0 py-2 bg-white border-0 text-inherit">
-              <div class="min-h-6 mb-0.5 block pl-0">
-                <input
-                  id="answer"
-                  class="mt-0.54 rounded-10 duration-250 ease-soft-in-out after:rounded-circle after:shadow-soft-2xl after:duration-250 checked:after:translate-x-5.25 h-5 relative float-left ml-auto w-10 cursor-pointer appearance-none border border-solid border-gray-200 bg-slate-800/10 bg-none bg-contain bg-left bg-no-repeat align-top transition-all after:absolute after:top-px after:h-4 after:w-4 after:translate-x-px after:bg-white after:content-[''] checked:border-slate-800/95 checked:bg-slate-800/95 checked:bg-none checked:bg-right"
-                  type="checkbox"
-                />
-                <label
-                  for="answer"
-                  class="w-4/5 mb-0 ml-4 overflow-hidden font-normal cursor-pointer select-none text-sm text-ellipsis whitespace-nowrap text-slate-500"
-                  for="flexSwitchCheckDefault1"
-                  >Email me when someone answers on my post</label
+                  >Activar verificación en dos pasos</label
                 >
               </div>
             </li>
             <li
+              class="relative block px-0 py-2 bg-white border-0 text-inherit"
+            ></li>
+            <li
               class="relative block px-0 py-2 bg-white border-0 rounded-b-lg text-inherit"
-            >
-              <div class="min-h-6 mb-0.5 block pl-0">
-                <input
-                  id="mention"
-                  class="mt-0.54 rounded-10 duration-250 ease-soft-in-out after:rounded-circle after:shadow-soft-2xl after:duration-250 checked:after:translate-x-5.25 h-5 relative float-left ml-auto w-10 cursor-pointer appearance-none border border-solid border-gray-200 bg-slate-800/10 bg-none bg-contain bg-left bg-no-repeat align-top transition-all after:absolute after:top-px after:h-4 after:w-4 after:translate-x-px after:bg-white after:content-[''] checked:border-slate-800/95 checked:bg-slate-800/95 checked:bg-none checked:bg-right"
-                  type="checkbox"
-                  checked
-                />
-                <label
-                  for="mention"
-                  class="w-4/5 mb-0 ml-4 overflow-hidden font-normal cursor-pointer select-none text-sm text-ellipsis whitespace-nowrap text-slate-500"
-                  for="flexSwitchCheckDefault2"
-                  >Email me when someone mentions me</label
-                >
-              </div>
-            </li>
+            ></li>
           </ul>
-          <h6
-            class="mt-6 font-bold leading-tight uppercase text-xs text-slate-500"
-          >
-            Application
-          </h6>
           <ul class="flex flex-col pl-0 mb-0 rounded-lg">
             <li
               class="relative block px-0 py-2 bg-white border-0 rounded-t-lg text-inherit"
-            >
-              <div class="min-h-6 mb-0.5 block pl-0">
-                <input
-                  id="launches projects"
-                  class="mt-0.54 rounded-10 duration-250 ease-soft-in-out after:rounded-circle after:shadow-soft-2xl after:duration-250 checked:after:translate-x-5.25 h-5 relative float-left ml-auto w-10 cursor-pointer appearance-none border border-solid border-gray-200 bg-slate-800/10 bg-none bg-contain bg-left bg-no-repeat align-top transition-all after:absolute after:top-px after:h-4 after:w-4 after:translate-x-px after:bg-white after:content-[''] checked:border-slate-800/95 checked:bg-slate-800/95 checked:bg-none checked:bg-right"
-                  type="checkbox"
-                />
-                <label
-                  for="launches projects"
-                  class="w-4/5 mb-0 ml-4 overflow-hidden font-normal cursor-pointer select-none text-sm text-ellipsis whitespace-nowrap text-slate-500"
-                  for="flexSwitchCheckDefault3"
-                  >New launches and projects</label
-                >
-              </div>
-            </li>
-            <li class="relative block px-0 py-2 bg-white border-0 text-inherit">
-              <div class="min-h-6 mb-0.5 block pl-0">
-                <input
-                  id="product updates"
-                  class="mt-0.54 rounded-10 duration-250 ease-soft-in-out after:rounded-circle after:shadow-soft-2xl after:duration-250 checked:after:translate-x-5.25 h-5 relative float-left ml-auto w-10 cursor-pointer appearance-none border border-solid border-gray-200 bg-slate-800/10 bg-none bg-contain bg-left bg-no-repeat align-top transition-all after:absolute after:top-px after:h-4 after:w-4 after:translate-x-px after:bg-white after:content-[''] checked:border-slate-800/95 checked:bg-slate-800/95 checked:bg-none checked:bg-right"
-                  type="checkbox"
-                  checked
-                />
-                <label
-                  for="product updates"
-                  class="w-4/5 mb-0 ml-4 overflow-hidden font-normal cursor-pointer select-none text-sm text-ellipsis whitespace-nowrap text-slate-500"
-                  for="flexSwitchCheckDefault4"
-                  >Monthly product updates</label
-                >
-              </div>
-            </li>
+            ></li>
+            <li
+              class="relative block px-0 py-2 bg-white border-0 text-inherit"
+            ></li>
             <li
               class="relative block px-0 py-2 pb-0 bg-white border-0 rounded-b-lg text-inherit"
-            >
-              <div class="min-h-6 mb-0.5 block pl-0">
-                <input
-                  id="subscribe"
-                  class="mt-0.54 rounded-10 duration-250 ease-soft-in-out after:rounded-circle after:shadow-soft-2xl after:duration-250 checked:after:translate-x-5.25 h-5 relative float-left ml-auto w-10 cursor-pointer appearance-none border border-solid border-gray-200 bg-slate-800/10 bg-none bg-contain bg-left bg-no-repeat align-top transition-all after:absolute after:top-px after:h-4 after:w-4 after:translate-x-px after:bg-white after:content-[''] checked:border-slate-800/95 checked:bg-slate-800/95 checked:bg-none checked:bg-right"
-                  type="checkbox"
-                />
-                <label
-                  for="subscribe"
-                  class="w-4/5 mb-0 ml-4 overflow-hidden font-normal cursor-pointer select-none text-sm text-ellipsis whitespace-nowrap text-slate-500"
-                  for="flexSwitchCheckDefault5"
-                  >Subscribe to newsletter</label
-                >
-              </div>
-            </li>
+            ></li>
           </ul>
         </div>
       </div>
@@ -338,8 +207,7 @@
             <a
               href="javascript:;"
               class="absolute top-0 right-0 mt-2 mr-2"
-              data-target="tooltip_trigger"
-              data-placement="top"
+              (click)="abrirModalEditar()"
               style="z-index: 10"
             >
               <i
@@ -402,69 +270,51 @@
         </div>
       </div>
     </div>
-  </div>
-  <footer class="pt-4">
-    <div class="w-full px-6 mx-auto">
-      <div class="flex flex-wrap items-center -mx-3 lg:justify-between">
-        <div
-          class="w-full max-w-full px-3 mt-0 mb-6 shrink-0 lg:mb-0 lg:w-1/2 lg:flex-none"
-        >
-          <div
-            class="leading-normal text-center text-sm text-slate-500 lg:text-left"
+    <!-- Modal para editar email y password -->
+    <div
+      *ngIf="mostrarModalEditar"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40"
+    >
+      <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
+        <h2 class="text-lg font-bold mb-4">Editar perfil</h2>
+        <form (ngSubmit)="actualizarPerfil()">
+          <label class="block mb-2 text-sm font-bold text-slate-700"
+            >Email</label
           >
-            ©
-            <script>
-              document.write(new Date().getFullYear() + ",");
-            </script>
-            made with <i class="fa fa-heart"></i> by
-            <a
-              href="https://www.creative-tim.com"
-              class="font-semibold text-slate-700"
-              target="_blank"
-              >Creative Tim</a
+          <input
+            type="email"
+            [(ngModel)]="nuevoEmail"
+            name="nuevoEmail"
+            required
+            class="mb-4 w-full p-2 border rounded"
+          />
+          <label class="block mb-2 text-sm font-bold text-slate-700"
+            >Password</label
+          >
+          <input
+            type="password"
+            [(ngModel)]="nuevoPassword"
+            name="nuevoPassword"
+            required
+            class="mb-4 w-full p-2 border rounded"
+          />
+          <div class="flex justify-end gap-2 mt-4">
+            <button
+              type="button"
+              (click)="cerrarModalEditar()"
+              class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
             >
-            for a better web.
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+            >
+              Guardar
+            </button>
           </div>
-        </div>
-        <div class="w-full max-w-full px-3 mt-0 shrink-0 lg:w-1/2 lg:flex-none">
-          <ul
-            class="flex flex-wrap justify-center pl-0 mb-0 list-none lg:justify-end"
-          >
-            <li class="nav-item">
-              <a
-                href="https://www.creative-tim.com"
-                class="block px-4 pt-0 pb-1 font-normal transition-colors ease-soft-in-out text-sm text-slate-500"
-                target="_blank"
-                >Creative Tim</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                href="https://www.creative-tim.com/presentation"
-                class="block px-4 pt-0 pb-1 font-normal transition-colors ease-soft-in-out text-sm text-slate-500"
-                target="_blank"
-                >About Us</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                href="https://creative-tim.com/blog"
-                class="block px-4 pt-0 pb-1 font-normal transition-colors ease-soft-in-out text-sm text-slate-500"
-                target="_blank"
-                >Blog</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                href="https://www.creative-tim.com/license"
-                class="block px-4 pt-0 pb-1 pr-0 font-normal transition-colors ease-soft-in-out text-sm text-slate-500"
-                target="_blank"
-                >License</a
-              >
-            </li>
-          </ul>
-        </div>
+        </form>
       </div>
     </div>
-  </footer>
+  </div>
 </div>

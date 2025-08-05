@@ -5,7 +5,7 @@ import { middleware } from '#start/kernel'
 router
   .group(() => {
     router.get('/setup', [TwoFactorAuthController, 'setup'])
-    router.post('/activar', [TwoFactorAuthController, 'activar'])
+    router.patch('/activar', [TwoFactorAuthController, 'activar'])
     router.patch('/desactivar', [TwoFactorAuthController, 'desactivar'])
   })
   .prefix('/auth/2fa')

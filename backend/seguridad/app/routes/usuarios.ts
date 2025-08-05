@@ -9,9 +9,7 @@ router
     router.post('/', [UsuariosController, 'store'])
     router.put('/:id', [UsuariosController, 'update'])
     router.delete('/:id', [UsuariosController, 'destroy'])
+    router.patch('/:id', [UsuariosController, 'updateProfile'])
   })
   .prefix('/admin/usuario')
-  .use([
-    middleware.verificarJWT(),
-    middleware.verificarRol(['administrador']),
-  ])
+  .use([middleware.verificarJWT(), middleware.verificarRol(['administrador'])])

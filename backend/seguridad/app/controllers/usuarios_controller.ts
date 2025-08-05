@@ -1,4 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import hash from '@adonisjs/core/services/hash'
 import Usuario from '#models/usuario'
 import Rol from '#models/rol'
 import { registroUsuarioValidator } from '#validators/registrar_usuario'
@@ -103,5 +104,30 @@ export default class UsuariosController {
 
     await usuario.delete()
     return response.ok({ mensaje: 'Usuario eliminado correctamente' })
+  }
+
+  // PUT /usuarios/:id/profile
+  async updateProfile({ params, request, response }: HttpContext) {
+    const usuario = await Usuario.find(params.id)
+    if (!usuario) {
+      return response.notFound({ mensaje: 'Usuario no encontrado' })
+    }
+
+    const { email, password } = request.only(['email', 'password'])
+
+    if (email) {
+      usuario.email = email
+    }
+    if (password) {
+      usuario.password = await hash.make(password)
+    }
+
+    await usuario.save()
+    await usuario.load('rol')
+
+    return response.ok({
+      mensaje: 'Perfil actualizado correctamente',
+      usuario,
+    })
   }
 }
