@@ -1,10 +1,10 @@
-// src/services/reserva.service.js
 const ReservaRepository = require('../repositories/reserva.repository');
 
 class ReservaService {
   async crearReserva(data) {
-    
-    if (!data.cliente_id || !data.paquete_id || !data.cantidad_personas) {
+    const { titular_id, paquete_id, cantidad_personas, fecha_viaje, estado_id } = data;
+
+    if (!titular_id || !paquete_id || !cantidad_personas || !fecha_viaje || !estado_id) {
       throw new Error('Faltan campos obligatorios');
     }
 

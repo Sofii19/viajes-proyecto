@@ -3,7 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 // Middleware
 app.use(cors());
@@ -13,12 +13,12 @@ app.use(express.json());
 // Importar rutas
 const reservaRoutes = require('./src/routes/reserva.route');
 const pagoRoutes = require('./src/routes/pago.route');
-const clienteRoutes = require('./src/routes/cliente.routes');
+const titularRoutes = require('./src/routes/titular_reserva.routes');
 
 // Usar rutas
-app.use('/api/reservas', reservaRoutes);
-app.use('/api/pagos', pagoRoutes);
-app.use('/api/clientes', clienteRoutes);
+app.use('/api/reserva', reservaRoutes);
+app.use('/api/pago', pagoRoutes);
+app.use('/api/titular', titularRoutes);
 
 // Iniciar servidor
 
