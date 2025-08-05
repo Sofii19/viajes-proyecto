@@ -2,6 +2,7 @@ import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import Usuario from '#models/usuario'
 import Rol from '#models/rol'
 import hash from '@adonisjs/core/services/hash'
+import { DateTime } from 'luxon'
 
 export default class UsuarioSeeder extends BaseSeeder {
   public async run() {
@@ -16,8 +17,10 @@ export default class UsuarioSeeder extends BaseSeeder {
         apellidoMaterno: 'García',
         email: 'admin@viajes.com',
         password: await hash.make('admin123'),
-        rolId: adminRol?.id,
+        rolId: adminRol?.id ?? null,
         activo: true,
+        twofaActivo: false,
+        fechaRegistro: DateTime.now(),
       },
       {
         primerNombre: 'Laura',
@@ -26,8 +29,10 @@ export default class UsuarioSeeder extends BaseSeeder {
         apellidoMaterno: '',
         email: 'cliente@viajes.com',
         password: await hash.make('cliente123'),
-        rolId: clienteRol?.id,
-        activo: true,
+        rolId: clienteRol?.id ?? null,
+        activo: false,
+        twofaActivo: false,
+        fechaRegistro: DateTime.now(),
       },
     ])
   }

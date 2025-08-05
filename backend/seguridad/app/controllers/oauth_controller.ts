@@ -1,4 +1,3 @@
-// app/controllers/oauth_controller.ts
 import type { HttpContext } from '@adonisjs/core/http'
 import OAuthService from '#services/oauth_service'
 
