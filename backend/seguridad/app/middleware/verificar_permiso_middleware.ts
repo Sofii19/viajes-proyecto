@@ -10,7 +10,7 @@ export default class VerificarPermiso {
     if (!usuario) {
       return ctx.response.unauthorized({ mensaje: 'Usuario no autenticado' })
     }
-    
+
     if (usuario.rolId === null) {
       throw new Error('El usuario no tiene un rol asignado')
     }
