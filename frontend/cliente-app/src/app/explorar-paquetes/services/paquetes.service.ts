@@ -14,4 +14,5 @@ export class PaquetesService {
   getPaquetesConPromocion(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/promocion`);
   }
+  
 }
