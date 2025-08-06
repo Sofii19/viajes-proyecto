@@ -24,7 +24,7 @@ export class LoginFormComponent {
         next: (res) => {
           if (res.token) {
             localStorage.setItem('token', res.token);
-            window.location.href = '/dashboard';
+            window.location.href = '/explorar-paquetes';
           } else if (res.requiere2fa) {
             this.twofaRequired = true;
             this.usuarioIdTwofa = res.usuario_id;
@@ -47,7 +47,7 @@ export class LoginFormComponent {
           next: (res) => {
             if (res.token) {
               localStorage.setItem('token', res.token);
-              window.location.href = '/dashboard';
+              window.location.href = '/explorar-paquetes';
             }
           },
           error: (err) => {

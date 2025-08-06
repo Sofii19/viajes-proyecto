@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RegistroService } from '../services/registro.service';
 
 @Component({
   selector: 'app-registro-form',
@@ -7,9 +8,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegistroFormComponent implements OnInit {
 
-  constructor() { }
+  nuevoCliente: any = {
+    primerNombre: '',
+    segundoNombre: '',
+    apellidoPaterno: '',
+    apellidoMaterno: '',
+    email: '',
+    password: '',
+    rolId: 2 // 2 para cliente
+  };
 
-  ngOnInit(): void {
+  constructor(private registroService: RegistroService) { }
+
+  ngOnInit(): void {}
+
+  registrarCliente() {
+    this.registroService.registrar(this.nuevoCliente).subscribe({
+      next: (res) => {
+        alert('Registro exitoso, revisa tu correo para activar tu cuenta');
+        // Puedes limpiar el formulario aquí si quieres
+      },
+      error: (err) => {
+        alert('Error en el registro');
+      }
+    });
   }
-
 }
