@@ -257,3 +257,26 @@
     </div>
   </div>
 </footer>
+<!-- Modal para ingresar código 2FA -->
+<div *ngIf="twofaRequired" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+  <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-xl text-center">
+    <h2 class="text-lg font-bold mb-4">Verificación en dos pasos</h2>
+    <p>Ingresa el código generado por tu app autenticadora:</p>
+    <input
+      type="text"
+      [(ngModel)]="codigoTwofa"
+      maxlength="6"
+      class="my-4 p-2 border rounded w-full text-center"
+      placeholder="Código 2FA"
+    />
+    <div class="flex justify-center gap-2 mt-4">
+      <button
+        (click)="verificarCodigoTwofa()"
+        class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+      >
+        Verificar
+      </button>
+    </div>
+    <div *ngIf="error" class="text-red-500 mt-2">{{ error }}</div>
+  </div>
+</div>

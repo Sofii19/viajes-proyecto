@@ -17,6 +17,9 @@ export class ProfilePageComponent implements OnInit {
   nuevoEmail: string = '';
   nuevoPassword: string = '';
 
+  qrData: string = '';
+  mostrarModalQr: boolean = false;
+
   constructor(private profileService: ProfileService) {}
 
   ngOnInit(): void {
@@ -27,6 +30,7 @@ export class ProfilePageComponent implements OnInit {
       if (userId) {
         this.userId = userId;
         this.profileService.getUsuarioById(userId).subscribe((data) => {
+          console.log('Usuario cargado:', data); // <-- Agrega esto
           this.usuario = data;
         });
       }
@@ -37,14 +41,28 @@ export class ProfilePageComponent implements OnInit {
     const checked = event.target.checked;
     if (this.userId) {
       if (checked) {
-        this.profileService.activarTwofa(this.userId).subscribe(() => {
-          this.usuario.twofa = true;
+        // 1. Genera el QR y el secreto primero
+        this.profileService.generarQrTwofa().subscribe((data) => {
+          this.qrData = data.qr;
+          this.mostrarModalQr = true;
+          // Aquí puedes mostrar un botón "Confirmar" en el modal
+          // Cuando el usuario confirme, ahí llamas a activarTwofa()
         });
       } else {
         this.profileService.desactivarTwofa(this.userId).subscribe(() => {
           this.usuario.twofa = false;
         });
       }
+    }
+  }
+
+  // Y en el modal, cuando el usuario confirme:
+  confirmarActivarTwofa() {
+    if (this.userId) {
+      this.profileService.activarTwofa(this.userId).subscribe(() => {
+        this.usuario.twofa = true;
+        this.mostrarModalQr = false;
+      });
     }
   }
 
@@ -71,10 +89,10 @@ export class ProfilePageComponent implements OnInit {
   }
 
   abrirModalEditar() {
-  this.nuevoEmail = this.usuario?.email || '';
-  this.nuevoPassword = '';
-  this.mostrarModalEditar = true;
-}
+    this.nuevoEmail = this.usuario?.email || '';
+    this.nuevoPassword = '';
+    this.mostrarModalEditar = true;
+  }
 
   cerrarModalEditar() {
     this.mostrarModalEditar = false;
@@ -82,10 +100,11 @@ export class ProfilePageComponent implements OnInit {
 
   actualizarPerfil() {
     if (this.userId) {
-      this.profileService.actualizarPerfil(this.userId, this.nuevoEmail, this.nuevoPassword).subscribe(() => {
-        localStorage.removeItem('token');
-        window.location.href = '/login';
-      });
+      this.profileService
+        .actualizarPerfil(this.userId, this.nuevoEmail, this.nuevoPassword)
+        .subscribe(() => {
+          this.mostrarModalEditar = false;
+        });
     }
   }
 }

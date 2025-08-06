@@ -40,11 +40,8 @@ export default class TwoFactorAuthController {
     })
   }
 
-  // POST /auth/2fa/activar
-  public async activar({ authUser, request, response }: HttpContext) {
-    const { codigo } = request.only(['codigo'])
-    console.log('Hora actual en el servidor:', DateTime.now().toISO())
-
+  // PATCH /auth/2fa/activar
+  public async activar({ authUser, response }: HttpContext) {
     if (!authUser) {
       return response.unauthorized({ mensaje: 'No autenticado' })
     }
@@ -53,23 +50,6 @@ export default class TwoFactorAuthController {
 
     if (!usuario.twofaSecret) {
       return response.badRequest({ mensaje: '2FA no está configurado' })
-    }
-
-    // 🔍 DEBUG PARA PRUEBAS SIN LA APP
-    console.log('Secreto:', usuario.twofaSecret)
-    const codigoEsperado = authenticator.generate(usuario.twofaSecret!)
-    console.log('Código actual esperado:', codigoEsperado)
-    console.log('Código ingresado por postman:', codigo)
-
-    const esValido = authenticator.verify({
-      token: codigo,
-      secret: usuario.twofaSecret,
-    })
-
-    console.log('verify:', esValido)
-
-    if (!esValido) {
-      return response.unauthorized({ mensaje: 'Código inválido' })
     }
 
     usuario.twofaActivo = true

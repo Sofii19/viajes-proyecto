@@ -31,10 +31,14 @@ export class ProfileService {
   }
 
   activarTwofa(userId: number): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl2FA}/activar`, { userId });
+    return this.http.patch<any>(`${this.apiUrl2FA}/activar`, { userId });
   }
 
   desactivarTwofa(userId: number): Observable<any> {
     return this.http.patch<any>(`${this.apiUrl2FA}/desactivar`, { userId });
+  }
+
+  generarQrTwofa(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl2FA}/setup`);
   }
 }
