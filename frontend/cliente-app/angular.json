@@ -20,7 +20,13 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+
+                "glob": "**/*",
+                "input": "node_modules/leaflet/dist/images/",
+                "output": "./assets"
+              }
             ],
             "styles": [
               "src/assets/css/nucleo-icons.css",
@@ -28,7 +34,8 @@
               "src/assets/css/perfect-scrollbar.css",
               "src/assets/css/soft-ui-dashboard-tailwind.css",
               "src/assets/css/tooltips.css",
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/leaflet/dist/leaflet.css"
             ],
             "scripts": []
           },

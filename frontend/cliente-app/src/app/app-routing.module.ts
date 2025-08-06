@@ -33,6 +33,7 @@ const routes: Routes = [
         loadChildren: () =>
           import('./profile/profile.module').then((m) => m.ProfileModule),
       },
+      { path: 'mapa-equipaje', loadChildren: () => import('./mapa-equipaje/mapa-equipaje.module').then(m => m.MapaEquipajeModule) },
     ],
   },
 ];
