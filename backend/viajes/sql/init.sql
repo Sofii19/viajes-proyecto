@@ -2,7 +2,7 @@ CREATE TABLE rutas (
     id SERIAL PRIMARY KEY,
     nombre_ruta VARCHAR(100) NOT NULL,
     duracion INT NOT NULL CHECK (duracion > 0),
-    descripcion TEXT,
+    descripcion TEXT
 );
 
 CREATE TABLE promociones (

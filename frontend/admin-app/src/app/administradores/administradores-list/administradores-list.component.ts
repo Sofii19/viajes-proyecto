@@ -32,7 +32,7 @@ export class AdministradoresListComponent implements OnInit {
 
     cargarAdministradores(): void {
       this.administradoresService.getAdministradores().subscribe(data => {
-        this.administradores = data.filter(u => u.rol_id === 1);
+        this.administradores = data.filter(u => u.rolId === 1);
       });
     }
 

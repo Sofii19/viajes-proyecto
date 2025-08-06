@@ -24,8 +24,8 @@
       <div class="flex-none w-auto max-w-full px-3 my-auto">
         <div class="h-full">
           <h5 class="mb-1">
-            {{ usuario?.primer_nombre }} {{ usuario?.segundo_nombre }}
-            {{ usuario?.apellido_paterno }} {{ usuario?.apellido_materno }}
+            {{ usuario?.primerNombre }} {{ usuario?.segundoNombre }}
+            {{ usuario?.apellidoPaterno }} {{ usuario?.apellidoMaterno }}
           </h5>
           <p class="mb-0 font-semibold leading-normal text-sm">
             {{ usuario?.rol?.nombre || "Admin" }}
@@ -233,8 +233,8 @@
               class="relative block px-4 py-2 pt-0 pl-0 leading-normal bg-white border-0 rounded-t-lg text-sm text-inherit"
             >
               <strong class="text-slate-700">Nombre completo:</strong>
-              &nbsp; {{ usuario?.primer_nombre }} {{ usuario?.segundo_nombre }}
-              {{ usuario?.apellido_paterno }} {{ usuario?.apellido_materno }}
+              &nbsp; {{ usuario?.primerNombre }} {{ usuario?.segundoNombre }}
+              {{ usuario?.apellidoPaterno }} {{ usuario?.apellidoMaterno }}
             </li>
             <li
               class="relative block px-4 py-2 pl-0 leading-normal bg-white border-0 border-t-0 text-sm text-inherit"
@@ -264,7 +264,7 @@
               class="relative block px-4 py-2 pl-0 leading-normal bg-white border-0 border-t-0 text-sm text-inherit"
             >
               <strong class="text-slate-700">Fecha de registro:</strong>
-              &nbsp; {{ usuario?.fecha_registro | date : "medium" }}
+              &nbsp; {{ usuario?.fechaRegistro | date : "medium" }}
             </li>
           </ul>
         </div>

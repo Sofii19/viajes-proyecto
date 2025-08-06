@@ -19,7 +19,7 @@ export class ClientesListComponent implements OnInit {
     apellido_paterno: '',
     apellido_materno: '',
     email: '',
-    rol_id: 2 // Asume que 2 es el rol de cliente
+    rolId: 2 // Asume que 2 es el rol de cliente
   };
 
   constructor(private clientesService: ClientesService) { }
@@ -30,7 +30,9 @@ export class ClientesListComponent implements OnInit {
 
   cargarClientes(): void {
     this.clientesService.getClientes().subscribe(data => {
-      this.clientes = data.filter(u => u.rol_id === 2);
+      console.log(data);
+      this.clientes = data.filter(u => u.rolId === 2);
+      console.log(this.clientes)
     });
   }
 
@@ -49,7 +51,7 @@ export class ClientesListComponent implements OnInit {
       apellido_materno: '',
       email: '',
       telefono: '',
-      rol_id: 2
+      rolId: 2
     };
   }
 
