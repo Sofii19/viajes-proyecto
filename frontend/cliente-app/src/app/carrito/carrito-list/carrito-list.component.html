@@ -1,0 +1,32 @@
+<div *ngIf="error" class="text-red-500 mb-4">{{ error }}</div>
+
+<table *ngIf="reservas.length" class="min-w-full bg-white border border-gray-200 rounded shadow">
+  <thead>
+    <tr>
+      <th class="py-2 px-4 border-b">#</th>
+      <th class="py-2 px-4 border-b">Fecha Viaje</th>
+      <th class="py-2 px-4 border-b">Paquete</th>
+      <th class="py-2 px-4 border-b">Personas</th>
+      <th class="py-2 px-4 border-b">Estado</th>
+      <th class="py-2 px-4 border-b">Acción</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let reserva of reservas">
+      <td class="py-2 px-4 border-b">{{ reserva.id }}</td>
+      <td class="py-2 px-4 border-b">{{ reserva.fecha_viaje | date }}</td>
+      <td class="py-2 px-4 border-b">{{ reserva.paquete_id }}</td>
+      <td class="py-2 px-4 border-b">{{ reserva.cantidad_personas }}</td>
+      <td class="py-2 px-4 border-b">{{ reserva.estado }}</td>
+      <td class="py-2 px-4 border-b">
+        <button class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700" (click)="pagarReserva(reserva)">
+          Pagar
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="!reservas.length && !error" class="text-gray-500">
+  No tienes reservas en tu carrito.
+</div>

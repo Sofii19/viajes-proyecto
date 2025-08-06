@@ -21,7 +21,7 @@ const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'explorar-paquetes',
@@ -35,7 +35,18 @@ const routes: Routes = [
         loadChildren: () =>
           import('./profile/profile.module').then((m) => m.ProfileModule),
       },
-      { path: 'mapa-equipaje', loadChildren: () => import('./mapa-equipaje/mapa-equipaje.module').then(m => m.MapaEquipajeModule) },
+      {
+        path: 'mapa-equipaje',
+        loadChildren: () =>
+          import('./mapa-equipaje/mapa-equipaje.module').then(
+            (m) => m.MapaEquipajeModule
+          ),
+      },
+      {
+        path: 'carrito',
+        loadChildren: () =>
+          import('./carrito/carrito.module').then((m) => m.CarritoModule),
+      },
     ],
   },
 ];

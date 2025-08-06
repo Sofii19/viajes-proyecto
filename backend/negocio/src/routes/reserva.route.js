@@ -17,4 +17,7 @@ router.put('/:id', ReservaController.actualizarReserva);
 // Eliminar reserva
 router.delete('/:id', ReservaController.eliminarReserva);
 
+// Obtener reservas por id de usuario
+router.get('/usuario/:usuarioId', ReservaController.obtenerReservasPorUsuario);
+
 module.exports = router;

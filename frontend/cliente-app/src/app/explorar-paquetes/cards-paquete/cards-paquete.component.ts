@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PaquetesService } from '../services/paquetes.service';
 import { TitularService } from '../../service-titular/titular.service';
 import { ReservaService } from '../../service-reserva/reserva.service';
-// import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 
 @Component({
@@ -22,27 +22,27 @@ export class CardsPaqueteComponent implements OnInit {
     cantidad_personas: "",
     estado_id: 1,
   }
-  
+
   nuevoTitular: any = {
-    nombre: 'Juan',
-    apellido: 'Clavijo',
-    cedula: 2131233424,
-    correo: 'juan.clavijo@gmail.com',
-    telefono: 3044444860,
-    usuario_id: 2
+    nombre: '',
+    apellido: '',
+    cedula: null,
+    correo: '',
+    telefono: null,
+    usuario_id: null
   };
 
   constructor(private paquetesService: PaquetesService, private titularService: TitularService, private reservaService: ReservaService) { }
 
   ngOnInit(): void {
     const token = localStorage.getItem('token');
-    // if (token) {
-    //   const decoded: any = jwtDecode(token);
-    //   const userId = decoded.sub || decoded.user_id || decoded.id;
-    //   if (userId) {
-    //     this.nuevoTitular.usuario_id = userId;
-    //   }
-    // }
+    if (token) {
+      const decoded: any = jwtDecode(token);
+      const userId = decoded.sub || decoded.user_id || decoded.id;
+      if (userId) {
+        this.nuevoTitular.usuario_id = userId;
+      }
+    }
     this.getPaquetes();
 
   }

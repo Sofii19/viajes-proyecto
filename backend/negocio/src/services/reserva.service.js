@@ -40,6 +40,13 @@ class ReservaService {
 
     return await ReservaRepository.eliminarReserva(id);
   }
+
+  async obtenerReservasPorUsuario(usuarioId) {
+    if (!usuarioId) {
+      throw new Error('El id de usuario es obligatorio');
+    }
+    return await ReservaRepository.obtenerReservasPorUsuario(usuarioId);
+  }
 }
 
 module.exports = new ReservaService();

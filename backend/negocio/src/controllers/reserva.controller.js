@@ -54,6 +54,17 @@ class ReservaController {
       res.status(500).json({ mensaje: 'Error al eliminar reserva', error: error.message });
     }
   }
+
+  async obtenerReservasPorUsuario(req, res) {
+    try {
+      const { usuarioId } = req.params;
+      const reservas = await ReservaService.obtenerReservasPorUsuario(usuarioId);
+      res.status(200).json(reservas);
+    } catch (error) {
+      console.error('Error al obtener reservas por usuario:', error.message);
+      res.status(500).json({ mensaje: 'Error al obtener reservas por usuario', error: error.message });
+    }
+  }
 }
 
 module.exports = new ReservaController();

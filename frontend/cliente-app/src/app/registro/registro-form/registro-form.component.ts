@@ -15,7 +15,7 @@ export class RegistroFormComponent implements OnInit {
     apellidoMaterno: '',
     email: '',
     password: '',
-    rolId: 2 // 2 para cliente
+    rolId: 2
   };
 
   constructor(private registroService: RegistroService) { }
@@ -26,7 +26,6 @@ export class RegistroFormComponent implements OnInit {
     this.registroService.registrar(this.nuevoCliente).subscribe({
       next: (res) => {
         alert('Registro exitoso, revisa tu correo para activar tu cuenta');
-        // Puedes limpiar el formulario aquí si quieres
       },
       error: (err) => {
         alert('Error en el registro');
