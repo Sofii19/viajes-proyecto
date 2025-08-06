@@ -6,22 +6,44 @@ import websocket
 with open('./data/coordenadas.json', 'r') as f:
     coordenadas = json.load(f)
 
-# Conectarse al servidor WebSocket
 def on_open(ws):
     print("Conectado al WebSocket desde Python")
-    i = 0
 
     def run():
-        nonlocal i
-        while i < len(coordenadas):
+        i = 0
+        while True:
             mensaje = json.dumps(coordenadas[i])
-            ws.send(mensaje)
-            print(f"Coordenada enviada: {mensaje}")
-            i += 1
+            try:
+                ws.send(mensaje)
+                print(f"Coordenada enviada: {mensaje}")
+            except Exception as e:
+                print(f"Error al enviar mensaje: {e}")
+                break
+            i = (i + 1) % len(coordenadas)  # volver al inicio al llegar al final
             time.sleep(1)
-    run()
 
-# Crear conexión WebSocket
-ws = websocket.WebSocketApp("ws://localhost:3001", on_open=on_open)
+    import threading
+    threading.Thread(target=run).start()  # para no bloquear el hilo principal
 
-ws.run_forever()
+def on_close(ws, close_status_code, close_msg):
+    print("WebSocket cerrado. Código:", close_status_code, "Mensaje:", close_msg)
+
+def on_error(ws, error):
+    print("Error en WebSocket:", error)
+
+# Conexión permanente con reconexión automática
+while True:
+    try:
+        ws = websocket.WebSocketApp(
+            "ws://localhost:3001",
+            on_open=on_open,
+            on_close=on_close,
+            on_error=on_error
+        )
+        ws.run_forever()
+    except KeyboardInterrupt:
+        print("Interrupción manual. Cerrando cliente.")
+        break
+    except Exception as e:
+        print("Error fuera del WebSocket:", e)
+        time.sleep(5)  # espera antes de intentar reconectar
