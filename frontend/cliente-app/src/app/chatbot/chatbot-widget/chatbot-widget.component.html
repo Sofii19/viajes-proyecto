@@ -10,7 +10,19 @@
     <button (click)="toggleChat()">✖</button>
   </div>
   <div class="chatbot-body">
-    <!-- Aquí irá la conversación -->
-    <p>¡Hola! ¿En qué puedo ayudarte?</p>
+    <div *ngFor="let msg of mensajes" class="chatbot-msg-row" [ngClass]="msg.emisor">
+      <div class="chatbot-msg-bubble" [ngClass]="msg.emisor">
+        {{ msg.texto }}
+      </div>
+    </div>
+  </div>
+  <div class="chatbot-footer">
+    <input
+      [(ngModel)]="mensajeUsuario"
+      (keyup.enter)="enviar()"
+      placeholder="Escribe tu mensaje..."
+      class="chatbot-input"
+    />
+    <button (click)="enviar()" class="chatbot-send-btn">Enviar</button>
   </div>
 </div>

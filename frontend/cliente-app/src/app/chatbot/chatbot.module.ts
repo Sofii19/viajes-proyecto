@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChatbotWidgetComponent } from './chatbot-widget/chatbot-widget.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -9,7 +10,8 @@ import { ChatbotWidgetComponent } from './chatbot-widget/chatbot-widget.componen
     ChatbotWidgetComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   exports: [ // <-- Agrega esto
     ChatbotWidgetComponent
