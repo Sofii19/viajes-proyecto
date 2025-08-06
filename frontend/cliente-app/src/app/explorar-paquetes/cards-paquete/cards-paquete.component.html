@@ -1,3 +1,12 @@
+<div class="mb-4 flex items-center gap-2">
+  <input
+    type="checkbox"
+    id="filtroPromocion"
+    (change)="getPaquetesConPromocion()"
+    class="accent-blue-600"
+  />
+  <label for="filtroPromocion" class="text-gray-700 font-medium">Solo promociones</label>
+</div>
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
   <div
     *ngFor="let paquete of paquetes"

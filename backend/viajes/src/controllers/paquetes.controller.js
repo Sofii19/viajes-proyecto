@@ -65,4 +65,5 @@ module.exports = {
   obtenerPaquetePorId,
   actualizarPaquete,
   eliminarPaquete,
+  obtenerPaquetesConPromocion
 };

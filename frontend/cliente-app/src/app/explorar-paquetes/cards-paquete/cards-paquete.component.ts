@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PaquetesService } from '../services/paquetes.service';
+import { log } from 'console';
 
 @Component({
   selector: 'app-cards-paquete',
@@ -16,8 +17,9 @@ export class CardsPaqueteComponent implements OnInit {
     this.getPaquetes();
   }
   getPaquetesConPromocion(): void {
-    if (this.soloPromocion) {
+    if (!this.soloPromocion) {
       this.paquetesService.getPaquetesConPromocion().subscribe((data) => {
+        console.log(data);
         this.paquetes = data.map((p, i) => ({
           ...p,
           imagenUrl: [
@@ -37,6 +39,7 @@ export class CardsPaqueteComponent implements OnInit {
   }
   getPaquetes(): void {
     this.paquetesService.getPaquetes().subscribe((data) => {
+      console.log(data)
       // Asigna una imagen por defecto o según el paquete
       this.paquetes = data.map((p, i) => ({
         ...p,

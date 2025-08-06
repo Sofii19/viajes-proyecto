@@ -242,24 +242,7 @@
               <strong class="text-slate-700">Email:</strong>
               &nbsp; {{ usuario?.email }}
             </li>
-            <li
-              class="relative block px-4 py-2 pl-0 leading-normal bg-white border-0 border-t-0 text-sm text-inherit"
-            >
-              <strong class="text-slate-700">Password:</strong>
-              &nbsp;
-              <span *ngIf="!mostrarPassword">********</span>
-              <span *ngIf="mostrarPassword">{{ usuario?.password }}</span>
-              <button
-                type="button"
-                (click)="mostrarPassword = !mostrarPassword"
-                class="ml-2 bg-transparent border-none cursor-pointer"
-              >
-                <i
-                  class="fa"
-                  [ngClass]="mostrarPassword ? 'fa-eye-slash' : 'fa-eye'"
-                ></i>
-              </button>
-            </li>
+            
             <li
               class="relative block px-4 py-2 pl-0 leading-normal bg-white border-0 border-t-0 text-sm text-inherit"
             >
