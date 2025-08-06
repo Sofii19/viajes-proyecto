@@ -11,4 +11,8 @@ export class LoginService {
   login(datos: { email: string; password: string }): Observable<any> {
     return this.http.post<any>(this.apiUrl, datos);
   }
+
+  verificarTwofa(data: { usuario_id: number, codigo: string }): Observable<any> {
+  return this.http.post<any>('http://localhost:3333/auth/2fa/verificar-login', data);
+}
 }
