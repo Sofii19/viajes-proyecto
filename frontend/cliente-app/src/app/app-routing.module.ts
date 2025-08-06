@@ -14,9 +14,20 @@ const routes: Routes = [
         loadChildren: () =>
           import('./explorar-paquetes/explorar-paquetes.module').then(
             (m) => m.ExplorarPaquetesModule
-          ),
+          )},
+      {
+        path: 'profile',
+        loadChildren: () =>
+          import('./profile/profile.module').then((m) => m.ProfileModule),
       },
     ],
+  },
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
+
+  {
+    path: 'login',
+    loadChildren: () =>
+      import('./login/login.module').then((m) => m.LoginModule),
   },
   { path: 'registro', loadChildren: () => import('./registro/registro.module').then(m => m.RegistroModule) },
 ];
