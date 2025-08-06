@@ -7,6 +7,9 @@ const crearPaquete = async (datosPaquete) => {
 const obtenerPaquetes = async () => {
   return await paquetesRepository.obtenerTodos();
 };
+const obtenerConPromocion = async () => {
+  return await paquetesRepository.obtenerConPromocion();
+};
 
 const obtenerPaquetePorId = async (id) => {
   return await paquetesRepository.obtenerPorId(id);

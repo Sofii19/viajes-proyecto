@@ -31,6 +31,10 @@ const obtenerTodos = async () => {
   const result = await pool.query("SELECT * FROM paquetes ORDER BY id ASC;");
   return result.rows;
 };
+const obtenerConPromocion = async () => {
+  const result = await pool.query("SELECT * FROM paquetes WHERE promocion_id IS NOT NULL ORDER BY id ASC;");
+  return result.rows;
+};
 
 const obtenerPorId = async (id) => {
   const result = await pool.query("SELECT * FROM paquetes WHERE id = $1;", [
@@ -78,6 +82,7 @@ const eliminar = async (id) => {
 module.exports = {
   crear,
   obtenerTodos,
+  obtenerConPromocion,
   obtenerPorId,
   actualizar,
   eliminar,

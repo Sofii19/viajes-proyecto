@@ -22,6 +22,15 @@ const obtenerPaquetes = async (req, res) => {
   }
 };
 
+const obtenerPaquetesConPromocion = async (req, res) => {
+  try {
+    const paquetes = await PaquetesService.obtenerConPromocion();
+    res.json(paquetes);
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al obtener paquetes con promoción', error: error.message });
+  }
+};
+
 const obtenerPaquetePorId = async (req, res) => {
   try {
     const paquete = await PaquetesService.obtenerPaquetePorId(req.params.id);
