@@ -87,15 +87,15 @@
 
       <li class="mt-0.5 w-full">
         <a
-          routerLink="/viajes"
+          routerLink="/seguir-equipaje"
           routerLinkActive="active-link"
           [routerLinkActiveOptions]="{ exact: true }"
-          #rlaViajes="routerLinkActive"
+          #rlaEquipaje="routerLinkActive"
           class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors"
         >
           <div
             [ngClass]="
-              rlaViajes.isActive
+              rlaEquipaje.isActive
                 ? 'bg-gradient-to-tl from-purple-700 to-pink-500'
                 : 'bg-white'
             "
@@ -135,7 +135,7 @@
           </div>
           <span
             class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-            >Viajes</span
+            >Equipaje</span
           >
         </a>
       </li>
