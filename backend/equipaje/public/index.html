@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Seguimiento de Equipaje</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    #map { height: 100vh; width: 100vw; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([4.6570, -74.0930], 15);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const marker = L.marker([4.6570, -74.0930]).addTo(map);
+    const ws = new WebSocket('ws://localhost:3001');
+    ws.binaryType = 'text';
+
+    ws.onmessage = (event) => {
+    try {
+        const { lat, lng } = JSON.parse(event.data);
+        marker.setLatLng([lat, lng]);
+        map.panTo([lat, lng]);
+    } catch (error) {
+        console.error('Error al procesar el mensaje del WebSocket:', error.message);
+    }
+    };
+  </script>
+</body>
+</html>
