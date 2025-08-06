@@ -25,6 +25,7 @@ export class ProfilePageComponent implements OnInit {
       const decoded: any = jwtDecode(token);
       const userId = decoded.sub || decoded.user_id || decoded.id;
       if (userId) {
+        this.userId = userId;
         this.profileService.getUsuarioById(userId).subscribe((data) => {
           this.usuario = data;
         });

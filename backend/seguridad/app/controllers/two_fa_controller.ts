@@ -10,6 +10,8 @@ authenticator.options = { window: 1 }
 
 export default class TwoFactorAuthController {
   // GET /auth/2fa/setup
+
+  // Genera el codigo qr y el secreto para la app de autenticación
   public async setup({ authUser, response }: HttpContext) {
     if (!authUser) {
       return response.unauthorized({ mensaje: 'No autenticado' })
@@ -110,7 +112,7 @@ export default class TwoFactorAuthController {
       return response.unauthorized({ mensaje: 'Código 2FA inválido' })
     }
 
-    const { default: jwt } = await import('jsonwebtoken') // <--- esto es lo que faltaba
+    const { default: jwt } = await import('jsonwebtoken')
     const token = jwt.sign({ sub: usuario.id, email: usuario.email }, process.env.JWT_SECRET!, {
       expiresIn: '1h',
     })

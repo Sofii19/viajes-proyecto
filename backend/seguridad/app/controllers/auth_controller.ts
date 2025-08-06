@@ -2,7 +2,6 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { cuid } from '@adonisjs/core/helpers'
 import hash from '@adonisjs/core/services/hash'
 import jwt from 'jsonwebtoken'
-import { DateTime } from 'luxon'
 
 import Usuario from '#models/usuario'
 import Activacion from '#models/activacion'
@@ -10,8 +9,7 @@ import Rol from '#models/rol'
 
 import { registroUsuarioValidator } from '#validators/registrar_usuario'
 import { loginUsuarioValidator } from '#validators/login_usuario'
-import { enviarCorreoActivacion, enviarCodigo2FA } from '../utils/email.js'
-import { generarCodigo2FA } from '../utils/codigo2fa.js'
+import { enviarCorreoActivacion } from '../utils/email.js'
 
 export default class AuthController {
   public async registerCliente({ request, response }: HttpContext) {
@@ -149,20 +147,6 @@ export default class AuthController {
           rol: usuario.rol.nombre,
         },
       })
-    }
-
-    const codigo = generarCodigo2FA()
-    const expiracion = DateTime.now().plus({ minutes: 5 })
-
-    usuario.codigo2fa = codigo
-    usuario.expiracionCodigo2fa = expiracion
-    await usuario.save()
-
-    try {
-      await enviarCodigo2FA(usuario.email, codigo)
-    } catch (error) {
-      console.error('Error enviando correo 2FA:', error)
-      return response.status(500).json({ mensaje: 'Error enviando código de verificación 2FA' })
     }
 
     return response.status(202).json({

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {
-  private apiUrl = 'http://localhost:3333/auth/login'; // Ajusta la URL según tu backend
+  private apiUrl = 'http://localhost:3333/auth/login';
 
   constructor(private http: HttpClient) {}
 
