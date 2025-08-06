@@ -15,13 +15,13 @@ export class AdministradoresListComponent implements OnInit {
     mostrarModalEditar = false;
     administradorEditar: any = null;
     nuevoAdministrador: any = {
-      primer_nombre: '',
-      segundo_nombre: '',
-      apellido_paterno: '',
-      apellido_materno: '',
+      primerNombre: '',
+      segundoNombre: '',
+      apellidoPaterno: '',
+      apellidoMaterno: '',
       email: '',
-      Password: '',
-      rol_id: 1 // Asume que 1 es el rol de administrador
+      password: '',
+      rolId: 1 // Asume que 1 es el rol de administrador
     };
 
     constructor(private administradoresService: AdministradoresService) { }
@@ -39,13 +39,13 @@ export class AdministradoresListComponent implements OnInit {
     abrirModalCrear() {
       this.mostrarModalCrear = true;
       this.nuevoAdministrador = {
-        primer_nombre: '',
-        segundo_nombre: '',
-        apellido_paterno: '',
-        apellido_materno: '',
+        primerNombre: '',
+        segundoNombre: '',
+        apellidoPaterno: '',
+        apellidoMaterno: '',
         email: '',
         telefono: '',
-        rol_id: 1
+        rolId: 1
       };
     }
 
