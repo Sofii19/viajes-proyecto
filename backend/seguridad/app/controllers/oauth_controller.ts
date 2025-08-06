@@ -15,6 +15,8 @@ export default class SocialAuthController {
 
   async handleCallback(ctx: HttpContext) {
     const service = new OAuthService()
-    return service.handleCallback(ctx)
+    const result = await service.handleCallback(ctx)
+    const token = result.token
+    return ctx.response.redirect().toPath(`http://localhost:4200/auth/callback?token=${token}`)
   }
 }

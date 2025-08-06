@@ -56,4 +56,8 @@ export class LoginFormComponent {
         });
     }
   }
+
+  loginWithProvider(provider: string) {
+    window.location.href = this.loginService.getSocialAuthUrl(provider);
+  }
 }

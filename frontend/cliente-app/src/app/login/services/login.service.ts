@@ -12,7 +12,17 @@ export class LoginService {
     return this.http.post<any>(this.apiUrl, datos);
   }
 
-  verificarTwofa(data: { usuario_id: number, codigo: string }): Observable<any> {
-  return this.http.post<any>('http://localhost:3333/auth/2fa/verificar-login', data);
-}
+  verificarTwofa(data: {
+    usuario_id: number;
+    codigo: string;
+  }): Observable<any> {
+    return this.http.post<any>(
+      'http://localhost:3333/auth/2fa/verificar-login',
+      data
+    );
+  }
+  
+  getSocialAuthUrl(provider: string): string {
+    return `http://localhost:3333/auth/${provider}`;
+  }
 }

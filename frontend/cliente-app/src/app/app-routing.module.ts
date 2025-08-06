@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { AuthCallbackComponent } from './auth/auth-callback/auth-callback.component'; // <-- Agrega esta línea
+import { AuthGuard } from './guards/auth.guard'; // <-- Asegúrate de tener un guardia de autenticación si es necesario
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -15,7 +17,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./registro/registro.module').then((m) => m.RegistroModule),
   },
-
+  { path: 'auth/callback', component: AuthCallbackComponent },
   {
     path: '',
     component: MainLayoutComponent,

@@ -11,15 +11,13 @@ export default class OAuthService {
     const social = ally.use(provider)
 
     if (social.accessDenied()) {
-      return response.unauthorized({ mensaje: 'Acceso denegado' })
+      throw new Error('Acceso denegado')
     }
-
     if (social.stateMisMatch()) {
-      return response.badRequest({ mensaje: 'Estado inválido' })
+      throw new Error('Estado inválido')
     }
-
     if (social.hasError()) {
-      return response.badRequest({ mensaje: 'Error en OAuth', detalle: social.getError() })
+      throw new Error('Error en OAuth: ' + social.getError())
     }
 
     const profile = await social.user()
@@ -28,13 +26,12 @@ export default class OAuthService {
 
     const primerNombre = profile.givenName || 'Nombre'
     const segundoNombre = ''
-    const [apellidoPaterno = 'SinApellido', apellidoMaterno = ''] = (profile.familyName || '').split(' ')
+    const [apellidoPaterno = 'SinApellido', apellidoMaterno = ''] = (
+      profile.familyName || ''
+    ).split(' ')
     const field = `${provider}Id` as keyof Usuario
 
-    let usuario = await Usuario.query()
-      .where(field, providerId)
-      .orWhere('email', email)
-      .first()
+    let usuario = await Usuario.query().where(field, providerId).orWhere('email', email).first()
 
     if (!usuario) {
       const rol = await Rol.findByOrFail('nombre', 'cliente')
@@ -53,19 +50,21 @@ export default class OAuthService {
       })
     }
 
+    await usuario.load('rol')
+
     const token = jwt.sign(
       {
-        id: usuario.id,
+        sub: usuario.id,
         email: usuario.email,
-        rolId: usuario.rolId,
+        rol: usuario.rol.nombre,
       },
       env.get('JWT_SECRET'),
       { expiresIn: '1h' }
     )
 
-    return response.ok({
+    return {
       mensaje: `Login exitoso con ${provider}`,
       token,
-    })
+    }
   }
 }
