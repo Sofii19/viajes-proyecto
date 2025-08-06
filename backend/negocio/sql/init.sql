@@ -9,7 +9,7 @@ CREATE TABLE estado_reserva (
 
 -- Tabla de titulares de la reserva
 CREATE TABLE titular_reserva (
-  id SERIAL PRIMARY KEY,
+     SERIAL PRIMARY KEY,
   nombre VARCHAR(100) NOT NULL,
   apellido VARCHAR(100) NOT NULL,
   cedula VARCHAR(20) NOT NULL UNIQUE,
