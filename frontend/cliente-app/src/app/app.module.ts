@@ -8,6 +8,9 @@ import { AppComponent } from './app.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { ChatbotModule } from './chatbot/chatbot.module';
+import { ChatbotWidgetComponent } from './chatbot/chatbot-widget/chatbot-widget.component';
+
 
 @NgModule({
   declarations: [
@@ -18,9 +21,10 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
   ],
   imports: [
     BrowserModule,
-    HttpClientModule, // Descomentar si se necesitan peticiones HTTP
+    HttpClientModule,
     AppRoutingModule,
-    RouterModule
+    RouterModule,
+    ChatbotModule
   ],
   providers: [],
   bootstrap: [AppComponent]

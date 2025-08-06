@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PaquetesService } from '../services/paquetes.service';
 import { TitularService } from '../../service-titular/titular.service';
 import { ReservaService } from '../../service-reserva/reserva.service';
-import { jwtDecode } from 'jwt-decode';
+// import { jwtDecode } from 'jwt-decode';
 
 
 @Component({
@@ -20,14 +20,15 @@ export class CardsPaqueteComponent implements OnInit {
     paquete_id: "",
     fecha_viaje: "",
     cantidad_personas: "",
-
+    estado_id: 1,
   }
+  
   nuevoTitular: any = {
-    nombre: '',
-    apellido: '',
-    cedula: null,
-    correo: null,
-    telefono: null,
+    nombre: 'Juan',
+    apellido: 'Clavijo',
+    cedula: 2131233424,
+    correo: 'juan.clavijo@gmail.com',
+    telefono: 3044444860,
     usuario_id: 2
   };
 
@@ -84,7 +85,9 @@ export class CardsPaqueteComponent implements OnInit {
   }
   crearTitularReserva(paqueteId: number): void {
     // Elimina campos nulos o 0
-    if (this.nuevoTitular.user_id) {
+    console.log(this.nuevoTitular.usuario_id)
+    if (this.nuevoTitular.usuario_id) {
+      console.log(this.nuevoTitular.usuario_id)
       this.titularService.crearTitular(this.nuevoTitular).subscribe(({
         next: (respuesta) => {
           console.log('Titular creado con éxito:', respuesta);
@@ -92,7 +95,6 @@ export class CardsPaqueteComponent implements OnInit {
           this.mostrarModalCrearReserva = true;
           this.nuevaReserva.titular_id = respuesta.id; // Asigna el ID del titular creado
           this.nuevaReserva.paquete_id = paqueteId; // Asigna el ID del paquete
-          this.crearReserva();
         },
         error: (err) => {
           console.error('Error al crear titular:', err);
@@ -110,7 +112,7 @@ export class CardsPaqueteComponent implements OnInit {
   }
   crearReserva(): void {
     console.log('Reserva creada para el paquete ID:', this.nuevaReserva.paquete_id);
-    
+    console.log('Titular ID:', this.nuevaReserva);
     if (this.nuevaReserva.titular_id && this.nuevaReserva.paquete_id) {
       this.reservaService.crearReserva(this.nuevaReserva).subscribe({
         next: (respuesta) => {
@@ -131,6 +133,7 @@ export class CardsPaqueteComponent implements OnInit {
   }
   mostrarModalCrearTitularReserva() {
     this.mostrarModalCrearTitular = true;
+    console.log(this.mostrarModalCrearTitular);
   }
   cerrarModalCrearTitular() {
     this.mostrarModalCrearTitular = false;

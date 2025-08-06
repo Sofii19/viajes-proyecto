@@ -1,0 +1,16 @@
+<!-- Botón flotante -->
+<div class="chatbot-fab" (click)="toggleChat()" *ngIf="!abierto">
+  💬
+</div>
+
+<!-- Panel de chat -->
+<div class="chatbot-panel" *ngIf="abierto">
+  <div class="chatbot-header">
+    <span>Chatbot</span>
+    <button (click)="toggleChat()">✖</button>
+  </div>
+  <div class="chatbot-body">
+    <!-- Aquí irá la conversación -->
+    <p>¡Hola! ¿En qué puedo ayudarte?</p>
+  </div>
+</div>
