@@ -4,12 +4,18 @@ import { middleware } from '#start/kernel'
 
 router
   .group(() => {
-    router.get('/', [UsuariosController, 'index'])
     router.get('/:id', [UsuariosController, 'show'])
-    router.post('/', [UsuariosController, 'store'])
-    router.put('/:id', [UsuariosController, 'update'])
     router.delete('/:id', [UsuariosController, 'destroy'])
     router.patch('/:id', [UsuariosController, 'updateProfile'])
+  })
+  .prefix('/admin/usuario')
+  .use([middleware.verificarJWT()])
+
+router
+  .group(() => {
+    router.get('/', [UsuariosController, 'index'])
+    router.post('/', [UsuariosController, 'store'])
+    router.put('/:id', [UsuariosController, 'update'])
   })
   .prefix('/admin/usuario')
   .use([middleware.verificarJWT(), middleware.verificarRol(['administrador'])])

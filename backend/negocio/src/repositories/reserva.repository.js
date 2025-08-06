@@ -18,7 +18,7 @@ class ReservaRepository {
       SELECT r.*, e.nombre AS estado,t.nombre AS nombre_titular,t.apellido AS apellido_titular
       FROM reservas r
       JOIN estado_reserva e ON r.estado_id = e.id
-      JOIN titulares t ON r.titular_id = t.id
+      JOIN titular_reserva t ON r.titular_id = t.id
       ORDER BY r.id ASC;
     `;
     const { rows } = await pool.query(query);
