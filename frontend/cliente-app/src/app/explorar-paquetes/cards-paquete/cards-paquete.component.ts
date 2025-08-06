@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { PaquetesService } from '../services/paquetes.service';
-import { log } from 'console';
+import { TitularService } from '../../service-titular/titular.service';
+import { ReservaService } from '../../service-reserva/reserva.service';
+import { jwtDecode } from 'jwt-decode';
+
 
 @Component({
   selector: 'app-cards-paquete',
@@ -10,11 +13,37 @@ import { log } from 'console';
 export class CardsPaqueteComponent implements OnInit {
   paquetes: any[] = [];
   soloPromocion: boolean = false;
+  mostrarModalCrearTitular: boolean = false;
+  mostrarModalCrearReserva: boolean = false;
+  nuevaReserva: any = {
+    titular_id: "",
+    paquete_id: "",
+    fecha_viaje: "",
+    cantidad_personas: "",
 
-  constructor(private paquetesService: PaquetesService) { }
+  }
+  nuevoTitular: any = {
+    nombre: '',
+    apellido: '',
+    cedula: null,
+    correo: null,
+    telefono: null,
+    usuario_id: 2
+  };
+
+  constructor(private paquetesService: PaquetesService, private titularService: TitularService, private reservaService: ReservaService) { }
 
   ngOnInit(): void {
+    const token = localStorage.getItem('token');
+    // if (token) {
+    //   const decoded: any = jwtDecode(token);
+    //   const userId = decoded.sub || decoded.user_id || decoded.id;
+    //   if (userId) {
+    //     this.nuevoTitular.usuario_id = userId;
+    //   }
+    // }
     this.getPaquetes();
+
   }
   getPaquetesConPromocion(): void {
     if (!this.soloPromocion) {
@@ -52,5 +81,75 @@ export class CardsPaqueteComponent implements OnInit {
         ][i % 20], // Ejemplo: asigna imágenes en orden
       }));
     });
+  }
+  crearTitularReserva(paqueteId: number): void {
+    // Elimina campos nulos o 0
+    if (this.nuevoTitular.user_id) {
+      this.titularService.crearTitular(this.nuevoTitular).subscribe(({
+        next: (respuesta) => {
+          console.log('Titular creado con éxito:', respuesta);
+          this.mostrarModalCrearTitular = false;
+          this.mostrarModalCrearReserva = true;
+          this.nuevaReserva.titular_id = respuesta.id; // Asigna el ID del titular creado
+          this.nuevaReserva.paquete_id = paqueteId; // Asigna el ID del paquete
+          this.crearReserva();
+        },
+        error: (err) => {
+          console.error('Error al crear titular:', err);
+        }
+      }));
+    }
+    this.nuevoTitular = {
+      nombre: '',
+      apellido: '',
+      cedula: null,
+      correo: null,
+      telefono: null,
+      usuario_id: null
+    };
+  }
+  crearReserva(): void {
+    console.log('Reserva creada para el paquete ID:', this.nuevaReserva.paquete_id);
+    
+    if (this.nuevaReserva.titular_id && this.nuevaReserva.paquete_id) {
+      this.reservaService.crearReserva(this.nuevaReserva).subscribe({
+        next: (respuesta) => {
+          console.log('Reserva creada con éxito:', respuesta);
+          this.mostrarModalCrearReserva = false;
+          this.nuevaReserva = {
+            titular_id: "",
+            paquete_id: "",
+            fecha_viaje: "",
+            cantidad_personas: "",
+          };
+        },
+        error: (err) => {
+          console.error('Error al crear reserva:', err);
+        }
+      });
+    }
+  }
+  mostrarModalCrearTitularReserva() {
+    this.mostrarModalCrearTitular = true;
+  }
+  cerrarModalCrearTitular() {
+    this.mostrarModalCrearTitular = false;
+    this.nuevoTitular = {
+      nombre: '',
+      apellido: '',
+      cedula: null,
+      correo: null,
+      telefono: null,
+      usuario_id: null
+    };
+  }
+  cerrarModalCrearReserva() {
+    this.mostrarModalCrearReserva = false;
+    this.nuevaReserva = {
+      titular_id: "",
+      paquete_id: "",
+      fecha_viaje: "",
+      cantidad_personas: "",
+    };
   }
 }

@@ -8,59 +8,127 @@
   <label for="filtroPromocion" class="text-gray-700 font-medium">Solo promociones</label>
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-  <div
-    *ngFor="let paquete of paquetes"
-    class="bg-white rounded-2xl shadow-xl p-0 flex flex-col justify-between border-2 border-transparent hover:border-blue-400 transition-all duration-300"
-  >
-    <img
-      [src]="paquete.imagenUrl"
-      alt="Imagen paquete"
-      class="rounded-t-2xl w-full h-56 object-cover"
-    />
+  <div *ngFor="let paquete of paquetes"
+    class="bg-white rounded-2xl shadow-xl p-0 flex flex-col justify-between border-2 border-transparent hover:border-blue-400 transition-all duration-300">
+    <img [src]="paquete.imagenUrl" alt="Imagen paquete" class="rounded-t-2xl w-full h-56 object-cover" />
     <div class="p-5 flex flex-col flex-1">
       <h3 class="text-lg font-bold mb-2 text-gray-800">{{ paquete.nombre }}</h3>
       <p class="mb-4 text-gray-600">{{ paquete.descripcion }}</p>
 
       <div class="mt-auto">
         <div class="flex items-center mb-2 space-x-2">
-          <svg
-            class="w-5 h-5 text-blue-500"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
+          <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
             <path
-              d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.561-.955L10 0l2.951 5.955 6.561.955-4.756 4.635 1.122 6.545z"
-            />
+              d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.561-.955L10 0l2.951 5.955 6.561.955-4.756 4.635 1.122 6.545z" />
           </svg>
           <span class="text-sm text-gray-700 font-semibold">{{
             paquete.calificacion || "5.0 Superb"
-          }}</span>
+            }}</span>
         </div>
         <div class="flex items-center mb-2 space-x-2">
-          <svg
-            class="w-5 h-5 text-blue-500"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
+          <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
             <path d="M10 20s8-4.5 8-10A8 8 0 1 0 2 10c0 5.5 8 10 8 10z" />
           </svg>
           <span class="text-sm text-blue-600 font-semibold">{{
             paquete.destino || paquete.ruta
-          }}</span>
+            }}</span>
         </div>
         <div class="flex items-center justify-between mt-4">
-          <span class="text-blue-600 font-bold text-lg"
-            >${{ paquete.precio_total }}</span
-          >
-          <button
-            class="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-all"
-            [routerLink]="['/carrito']"
-            [queryParams]="{ paqueteId: paquete.id }"
-          >
+          <span class="text-blue-600 font-bold text-lg">${{ paquete.precio_total }}</span>
+          <button (event)="mostrarModalCrearTitularReserva()" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-all">
             Reservar
           </button>
         </div>
       </div>
     </div>
   </div>
+ <!-- Formulario para crear titular_reserva -->
+<div *ngIf="mostrarModalCrearTitular" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+  <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
+    <h2 class="text-lg font-bold mb-4">Crear Titular de Reserva</h2>
+    <form (ngSubmit)="crearTitularReserva(paquete.id)">
+      <input
+        class="mb-2 w-full p-2 border rounded"
+        placeholder="Nombre"
+        [(ngModel)]="nuevoTitular.nombre"
+        name="nombre"
+        required
+      />
+      <input
+        class="mb-2 w-full p-2 border rounded"
+        placeholder="Apellido"
+        [(ngModel)]="nuevoTitular.apellido"
+        name="apellido"
+        required
+      />
+      <input
+        class="mb-2 w-full p-2 border rounded"
+        placeholder="Cédula"
+        [(ngModel)]="nuevoTitular.cedula"
+        name="cedula"
+        required
+      />
+      <input
+        class="mb-2 w-full p-2 border rounded"
+        placeholder="Correo"
+        type="email"
+        [(ngModel)]="nuevoTitular.correo"
+        name="correo"
+        required
+      />
+      <input
+        class="mb-2 w-full p-2 border rounded"
+        placeholder="Teléfono"
+        [(ngModel)]="nuevoTitular.telefono"
+        name="telefono"
+        required
+      />
+      
+
+      <div class="flex justify-end gap-2 mt-4">
+        <button type="button" (click)="cerrarModalCrear()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
+          Cancelar
+        </button>
+        <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">
+          Crear
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Formulario para crear reserva -->
+<div *ngIf="mostrarModalCrearReserva" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+  <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
+    <h2 class="text-lg font-bold mb-4">Crear Reserva</h2>
+    <form (ngSubmit)="crearReserva()">
+      <input
+        class="mb-2 w-full p-2 border rounded"
+        type="date"
+        placeholder="Fecha de viaje"
+        [(ngModel)]="nuevaReserva.fecha_viaje"
+        name="fecha_viaje"
+        required
+      />
+
+      <!-- Cantidad de personas -->
+      <input
+        class="mb-2 w-full p-2 border rounded"
+        type="number"
+        placeholder="Cantidad de personas"
+        [(ngModel)]="nuevaReserva.cantidad_personas"
+        name="cantidad_personas"
+        required
+        min="1"
+      />
+      <div class="flex justify-end gap-2 mt-4">
+        <button type="button" (click)="cerrarModalCrearReserva()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
+          Cancelar
+        </button>
+        <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">
+          Crear
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
 </div>
